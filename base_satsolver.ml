@@ -91,20 +91,20 @@ let parse (s: string) : formule =
 							if (s.[j] != ')') then
 								(print_int j; failwith "mauvais parenthésage")
 							else
-							parse_aux (i+1) (j-1)
+								parse_aux (i+1) (j-1)
 						end
-				else if (i = j && s.[i] = 'T') then 
-					Top
-				else if (i = j && s.[i] = 'F') then 
-					Bot
-				else 
-					Var(String.sub s i (j-i+1))
+					else if (i = j && s.[i] = 'T') then 
+						Top
+					else if (i = j && s.[i] = 'F') then 
+						Bot
+					else 
+						Var(String.sub s i (j-i+1))
 				else match s.[k] with
-					| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
-					| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
-					| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
-					| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
-					| _ -> raise Erreur_syntaxe
+						| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
+						| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
+						| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
+						| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
+						| _ -> raise Erreur_syntaxe
 	in parse_aux 0 (n -1)
 
 (* Renvoie une formule construire à partir du contenu du fichier fn.
