@@ -75,29 +75,37 @@ let parse (s: string) : formule =
 	let n = String.length s in
 	(* construit une formule à partir de s[i..j] *)
 	let rec parse_aux (i: int) (j:int) =
-		if not (0 <= i && i < n && 0 <= j && j < n && i <= j ) then raise Erreur_syntaxe else
-		if s.[i] = ' ' then parse_aux (i+1) j
-		else if s.[j] = ' ' then parse_aux i (j-1)
-		else let k = find_op_surface s i j in 
-		if k = -1 then
-			if s.[i] = '~' then 
-				Not (parse_aux (i+1) j)
-			else if s.[i] = '(' then
-				begin 
-					if (s.[j] != ')') then (print_int j; failwith "mauvais parenthésage") else
-					parse_aux (i+1) (j-1)
-				end
-			else if (i = j && s.[i] = 'T') then Top
-			else if (i = j && s.[i] = 'F') then Bot
-			else Var(String.sub s i (j-i+1))
-
-		else match s.[k] with
-			| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
-			| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
-			| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
-			| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
-			| _ -> raise Erreur_syntaxe
-	in parse_aux 0 (String.length s -1)
+		if (i < 0 || i >= n || j < 0 || j >= n || i > j) then
+			raise Erreur_syntaxe
+		else if s.[i] = ' ' then
+			parse_aux (i+1) j
+		else if s.[j] = ' ' then
+			parse_aux i (j-1)
+		else
+			let k = find_op_surface s i j in
+				if k = -1 then
+					if s.[i] = '~' then
+						Not (parse_aux (i+1) j)
+					else if s.[i] = '(' then
+						begin 
+							if (s.[j] != ')') then
+								(print_int j; failwith "mauvais parenthésage")
+							else
+							parse_aux (i+1) (j-1)
+						end
+				else if (i = j && s.[i] = 'T') then 
+					Top
+				else if (i = j && s.[i] = 'F') then 
+					Bot
+				else 
+					Var(String.sub s i (j-i+1))
+				else match s.[k] with
+					| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
+					| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
+					| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
+					| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
+					| _ -> raise Erreur_syntaxe
+	in parse_aux 0 (n -1)
 
 (* Renvoie une formule construire à partir du contenu du fichier fn.
    Lève une exception Erreur_syntaxe si le contenu du fichier n'est pas une formule valide.
@@ -118,4 +126,5 @@ let from_file (filename: string) : formule =
 
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
-	print_string "Tests OK\n";;
+	print_string "Tests OK\n"
+;;
