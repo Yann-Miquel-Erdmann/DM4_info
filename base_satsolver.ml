@@ -130,8 +130,18 @@ let rec compte_ops (f: formule) : int	=
 	| Not e -> compte_ops e + 1
 	| Top | Bot | Var _ -> 0
 ;;
+
+let print_bool (b:bool) =
+	if b then
+		begin
+			print_string "true";
+		end
+	else begin print_string "false" end
+;;
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
+	assert (parse "(a & ~a) = F" = And(Or(Not(And(Var "a",Not(Var "a"))),Bot),Or(Not(Bot),And(Var "a",Not(Var "a")))));
+	print_bool (try (let _ = parse "a + a" in false ) with Erreur_syntaxe -> true);
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"
 ;;
