@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "ocamlc",
+      "args": ["base_satsolver.ml", "valuation.ml", "satsolver.ml", "-o", "a.out"]
+    },
+    {
+      "label": "run test",
+      "type": "shell",
+      "command": "./a.out test"
+    },
+    {
+      "label": "build and run test",
+      "dependsOn": ["build", "run test"]
+    }
+  ]
+}

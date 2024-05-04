@@ -8,6 +8,7 @@ let test () =
   Valuation.test_interpret();
   Valuation.test_add_one();
   Valuation.test_valuation_next();
+  Base_satsolver.test_from_file();
   print_string "tous les tests ont réussi\n"
 ;;
 
