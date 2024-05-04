@@ -145,3 +145,8 @@ let test_parse () =
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"
 ;;
+let test_from_file () =
+	assert(from_file("tests/test1.txt") = Or(Var "a", Top));
+	assert(from_file("tests/test2.txt") = And(Or(Var "a",Var "b"),Or(Not(Var "a"),Not(Var "b"))));
+	assert(try (let _ = from_file("tests/test4.txt") in false ) with Erreur_syntaxe -> true);
+	assert(try (let _ = from_file("tests/test 3") in false ) with Sys_error _ -> true);
