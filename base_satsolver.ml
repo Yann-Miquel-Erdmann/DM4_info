@@ -50,18 +50,23 @@ let priority (c: char) : int = match c with
  	   entre i et k-1.
  	   paren_lvl: niveau d'imbrication actuel des parenthèses *)
  	let rec find_op_paren (k:int) (res:int) (paren_lvl: int) : int  =
- 		if k=j+1 then res else
- 		if s.[k] = '(' then find_op_paren (k+1) res (paren_lvl+1)
- 		else if s.[k] = ')' then find_op_paren (k+1) res (paren_lvl-1) 
+ 		if k=j+1 then
+			res
+		else
+			if s.[k] = '(' then
+				find_op_paren (k+1) res (paren_lvl+1)
+			else
+				if s.[k] = ')' then
+					find_op_paren (k+1) res (paren_lvl-1) 
 
- 		(* Le caractère lu est pris si l'on est hors des parenthèses,
- 		   que le caractère est bien un opérateur, et qu'il est moins
- 		   prioritaire que le meilleur résultat jusqu'ici *)
- 		else if paren_lvl = 0 
- 			 && is_binop s.[k] 
- 			 && (res = -1 || priority s.[k] < priority s.[res]) 
- 			 then find_op_paren (k+1) k (paren_lvl)
- 		else find_op_paren (k+1) res (paren_lvl)
+			(* Le caractère lu est pris si l'on est hors des parenthèses,
+				que le caractère est bien un opérateur, et qu'il est moins
+				prioritaire que le meilleur résultat jusqu'ici *)
+				else
+					if (paren_lvl = 0) && (is_binop s.[k]) && (res = -1 || priority s.[k] < priority s.[res]) then 
+						find_op_paren (k+1) k (paren_lvl)
+					else 
+						find_op_paren (k+1) res (paren_lvl)
  	in find_op_paren i (-1) 0;;
 
 (* Renvoie une formule construite à partir de la chaîne s.
@@ -70,29 +75,37 @@ let parse (s: string) : formule =
 	let n = String.length s in
 	(* construit une formule à partir de s[i..j] *)
 	let rec parse_aux (i: int) (j:int) =
-		if not (0 <= i && i < n && 0 <= j && j < n && i <= j ) then raise Erreur_syntaxe else
-		if s.[i] = ' ' then parse_aux (i+1) j
-		else if s.[j] = ' ' then parse_aux i (j-1)
-		else let k = find_op_surface s i j in 
-		if k = -1 then
-			if s.[i] = '~' then 
-				Not (parse_aux (i+1) j)
-			else if s.[i] = '(' then
-				begin 
-					if (s.[j] != ')') then (print_int j; failwith "mauvais parenthésage") else
-					parse_aux (i+1) (j-1)
-				end
-			else if (i = j && s.[i] = 'T') then Top
-			else if (i = j && s.[i] = 'F') then Bot
-			else Var(String.sub s i (j-i+1))
-
-		else match s.[k] with
-			| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
-			| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
-			| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
-			| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
-			| _ -> raise Erreur_syntaxe
-	in parse_aux 0 (String.length s -1)
+		if (i < 0 || i >= n || j < 0 || j >= n || i > j) then
+			raise Erreur_syntaxe
+		else if s.[i] = ' ' then
+			parse_aux (i+1) j
+		else if s.[j] = ' ' then
+			parse_aux i (j-1)
+		else
+			let k = find_op_surface s i j in
+				if k = -1 then
+					if s.[i] = '~' then
+						Not (parse_aux (i+1) j)
+					else if s.[i] = '(' then
+						begin 
+							if (s.[j] != ')') then
+								(print_int j; failwith "mauvais parenthésage")
+							else
+							parse_aux (i+1) (j-1)
+						end
+				else if (i = j && s.[i] = 'T') then 
+					Top
+				else if (i = j && s.[i] = 'F') then 
+					Bot
+				else 
+					Var(String.sub s i (j-i+1))
+				else match s.[k] with
+					| '&' -> And(parse_aux i (k-1), parse_aux (k+1) j)
+					| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
+					| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
+					| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
+					| _ -> raise Erreur_syntaxe
+	in parse_aux 0 (n -1)
 
 (* Renvoie une formule construire à partir du contenu du fichier fn.
    Lève une exception Erreur_syntaxe si le contenu du fichier n'est pas une formule valide.
@@ -113,4 +126,5 @@ let from_file (filename: string) : formule =
 
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
-	print_string "Tests OK\n";;
+	print_string "Tests OK\n"
+;;
