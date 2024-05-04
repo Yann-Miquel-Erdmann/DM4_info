@@ -2,4 +2,4 @@ a.out
 *.cmi
 *.cmo
 satsolver
-.*
+.vscode/settings.json
