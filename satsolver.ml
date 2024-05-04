@@ -1,5 +1,6 @@
 let test () =
-  assert (1 = 1);
+  assert ((Array.length Sys.argv) > 1);
+  assert (1 == 1);
   print_string "tous les tests ont réussi\n"
 ;;
 

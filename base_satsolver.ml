@@ -50,18 +50,23 @@ let priority (c: char) : int = match c with
  	   entre i et k-1.
  	   paren_lvl: niveau d'imbrication actuel des parenthèses *)
  	let rec find_op_paren (k:int) (res:int) (paren_lvl: int) : int  =
- 		if k=j+1 then res else
- 		if s.[k] = '(' then find_op_paren (k+1) res (paren_lvl+1)
- 		else if s.[k] = ')' then find_op_paren (k+1) res (paren_lvl-1) 
+ 		if k=j+1 then
+			res
+		else
+			if s.[k] = '(' then
+				find_op_paren (k+1) res (paren_lvl+1)
+			else
+				if s.[k] = ')' then
+					find_op_paren (k+1) res (paren_lvl-1) 
 
- 		(* Le caractère lu est pris si l'on est hors des parenthèses,
- 		   que le caractère est bien un opérateur, et qu'il est moins
- 		   prioritaire que le meilleur résultat jusqu'ici *)
- 		else if paren_lvl = 0 
- 			 && is_binop s.[k] 
- 			 && (res = -1 || priority s.[k] < priority s.[res]) 
- 			 then find_op_paren (k+1) k (paren_lvl)
- 		else find_op_paren (k+1) res (paren_lvl)
+			(* Le caractère lu est pris si l'on est hors des parenthèses,
+				que le caractère est bien un opérateur, et qu'il est moins
+				prioritaire que le meilleur résultat jusqu'ici *)
+				else
+					if (paren_lvl = 0) && (is_binop s.[k]) && (res = -1 || priority s.[k] < priority s.[res]) then 
+						find_op_paren (k+1) k (paren_lvl)
+					else 
+						find_op_paren (k+1) res (paren_lvl)
  	in find_op_paren i (-1) 0;;
 
 (* Renvoie une formule construite à partir de la chaîne s.
