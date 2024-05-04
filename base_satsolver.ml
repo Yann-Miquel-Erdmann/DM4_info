@@ -124,7 +124,14 @@ let from_file (filename: string) : formule =
 	let s = read_lines f in
 	parse s
 
+let rec compte_ops (f: formule) : int	=
+	match f with
+	| Or (g, d) | And (g, d) -> compte_ops g + compte_ops d + 1
+	| Not e -> compte_ops e + 1
+	| Top | Bot | Var _ -> 0
+;;
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
+	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"
 ;;

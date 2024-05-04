@@ -1,4 +1,5 @@
 open Base_satsolver;;
+
 let test () =
   assert ((Array.length Sys.argv) > 1);
   assert (1 == 1);
