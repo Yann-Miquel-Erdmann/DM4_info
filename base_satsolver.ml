@@ -141,7 +141,7 @@ let print_bool (b:bool) =
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
 	assert (parse "(a & ~a) = F" = And(Or(Not(And(Var "a",Not(Var "a"))),Bot),Or(Not(Bot),And(Var "a",Not(Var "a")))));
-	print_bool (try (let _ = parse "a + a" in false ) with Erreur_syntaxe -> true);
+	print_bool (try (let _ = parse "a = = " in false ) with Erreur_syntaxe -> true);
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"
 ;;
