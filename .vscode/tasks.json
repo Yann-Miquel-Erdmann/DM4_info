@@ -5,7 +5,7 @@
       "label": "build",
       "type": "shell",
       "command": "ocamlc",
-      "args": ["base_satsolver.ml", "valuation.ml", "satsolver.ml", "-o", "a.out"]
+      "args": ["base_satsolver.ml", "valuation.ml", "algo_quine.ml", "satsolver.ml", "-o", "a.out"]
     },
     {
       "label": "run test",

@@ -1,8 +1,24 @@
 open Base_satsolver;;
 open Valuation;;
-open Satsolver;;
 
 type sat_result = valuation option;;
+
+let rec in_list (v: 'a) (l:'a list) =
+  match l with
+  | [] -> false
+  | x::q -> if x == v then true else in_list v q
+;;
+
+let calculate_var (f:formule) : formule list =
+  let rec calc_var_aux (f:formule) (l:formule list) : formule list =
+    match f with
+    | Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
+    | Not e -> calc_var_aux e l
+    | Top | Bot -> l
+    | Var x -> if not (in_list (Var x) l) then (Var x)::l else l
+  
+  in calc_var_aux f []
+;;
 
 let rec simpl_step (f:formule) : formule * bool =
   match f with
