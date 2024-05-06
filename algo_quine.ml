@@ -1,4 +1,5 @@
 open Base_satsolver;;
+
 let rec simpl_step (f:formule) : formule * bool =
   match f with
   | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2,true
@@ -79,4 +80,11 @@ let rec simpl_full (f:formule) : formule =
   if b then simpl_full a
   else f
 ;;
+
+let rec quine_aux (f: formule)(l:  list) : sat_result =
+  match l with
+  | [] -> if simpl_full(f) = Top then (*sat*) else (*non sat*)
+  | x::q -> if quine_aux(subst(f,x,Top),q) (*sat*) then
+
+let quine (f: formule) : sat_result =
 
