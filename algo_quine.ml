@@ -1,7 +1,8 @@
 open Base_satsolver;;
 open Valuation;;
+open Satsolver;;
 
-type sat_
+type sat_result = valuation option;;
 
 let rec simpl_step (f:formule) : formule * bool =
   match f with
@@ -84,7 +85,20 @@ let rec simpl_full (f:formule) : formule =
   else f
 ;;
 
-let rec quine_aux (f: formule) (l: string list) (v: valuation) : sat_result = 
-  match l with
-  | [] -> if simpl_full f = Top then Some v else None
-  | x::q -> if quine_aux (simpl_full (subst f x Top))
+let quine (f:formule) : sat_result =
+  let rec quine_aux (f: formule) (l: string list) (v: valuation) : sat_result = 
+    match l with
+    | [] -> if simpl_full f = Top then Some v else None
+    | x::q -> 
+      match quine_aux (subst f x Top) q ((x, true)::v) with
+      | None -> quine_aux (subst f x Bot) q ((x, false)::v)
+      | Some v -> Some v
+  in quine_aux f (
+    let rec string_from_var (f:formule list) (s: string list) : string list =
+      match f with
+      | [] -> s
+      | (Var x)::q -> string_from_var q (x::s)
+      | _ -> failwith "pas bon"
+    in string_from_var (calculate_var f) []
+  ) []
+;;
