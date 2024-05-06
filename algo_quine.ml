@@ -1,5 +1,8 @@
 open Base_satsolver;;
 
+
+type sat_result = valuation option
+
 let rec simpl_step (f:formule) : formule * bool =
   match f with
   | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2,true
@@ -81,10 +84,15 @@ let rec simpl_full (f:formule) : formule =
   else f
 ;;
 
-let rec quine_aux (f: formule)(l:  list) : sat_result =
+let rec quine_aux (f: formule)(l: string list )(v: valuation) : sat_result =
   match l with
-  | [] -> if simpl_full(f) = Top then (*sat*) else (*non sat*)
-  | x::q -> if quine_aux(subst(f,x,Top),q) (*sat*) then
+  | [] -> if simpl_full(f) = Top then Some v else None
+  | x::q -> if quine_aux(simpl_full(subst(f,x,Top)),q) =  then
 
 let quine (f: formule) : sat_result =
 
+let rec print_true (v: valuation): unit =
+  match v with
+  | [] -> ()
+  | (x,true)::q -> print_string(x);print_string "\n";print_true(q)
+  | (x,false)::q -> print_true(q)

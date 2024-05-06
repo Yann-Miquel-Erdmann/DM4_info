@@ -6,7 +6,7 @@ type formule =
 	| Or of formule * formule
 	| Not of formule
 
-type sat_result = valuation option
+
 
 let implique (f1, f2) = Or(Not f1, f2)
 let equivalence (f1, f2) = And(implique (f1, f2), implique (f2, f1))
