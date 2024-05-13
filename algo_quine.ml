@@ -118,3 +118,10 @@ let quine (f:formule) : sat_result =
     in string_from_var (calculate_var f) []
   ) []
 ;;
+
+let rec print_true (v: valuation): unit =
+  
+  match v with
+  | [] -> ()
+  | (x,true)::q -> print_sting x ;print_sting "\n";print_true(q) 
+  | (x,false)::q -> print_true(q) 
