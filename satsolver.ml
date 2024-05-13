@@ -1,5 +1,6 @@
 open Valuation;;
 open Base_satsolver;;
+open Algo_quine;;
 
 let test () =
   assert ((Array.length Sys.argv) > 1);
@@ -33,23 +34,6 @@ let union (l1:'a list) (l2: 'a list): 'a list =
     | [], x::q | x::q, [] -> union_aux q [] (x::l3)
     | [], [] -> List.rev l3
   in union_aux l1 l2 []
-;;
-
-let rec in_list (v: 'a) (l:'a list) =
-  match l with
-  | [] -> false
-  | x::q -> if x == v then true else in_list v q
-;;
-
-let calculate_var (f:formule) : formule list =
-  let rec calc_var_aux (f:formule) (l:formule list) : formule list =
-    match f with
-    | Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
-    | Not e -> calc_var_aux e l
-    | Top | Bot -> l
-    | Var x -> if not (in_list (Var x) l) then (Var x)::l else l
-  
-  in calc_var_aux f []
 ;;
 
 let test () =
