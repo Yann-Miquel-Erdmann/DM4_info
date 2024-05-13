@@ -52,7 +52,11 @@ let main () =
     if Sys.argv.(1)="test" then 
       test()
     else 
-      print_string (read_file(Sys.argv.(1))); print_string "\n\n";
+      let formule = from_file Sys.argv.(1) in
+      let valuation = quine formule in
+      match valuation with
+      | None -> print_string "La formule n'est pas satisfiable\n";
+      | Some v -> print_string "La formule est satisfiable en assignat 1 aux variables suivantes et 0 aux autres:\n"; print_true v
 ;;
 
 let _ = main()

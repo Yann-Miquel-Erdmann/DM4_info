@@ -1,11 +1,11 @@
 type formule =
-	| Var of string
-	| Top
-	| Bot
-	| And of formule * formule
-	| Or of formule * formule
-	| Not of formule
-
+| Var of string
+| Top
+| Bot
+| And of formule * formule
+| Or of formule * formule
+| Not of formule
+;;
 
 
 let implique (f1, f2) = Or(Not f1, f2)
@@ -30,6 +30,7 @@ exception Fichier_invalide
 let is_binop (c: char) : bool = match c with 
 	| '&' |  '|' |  '>' |  '='  -> true
 	| _ -> false 
+;;
 
 (* Priorité de l'opérateur c. Permet de déterminer
 	comment interpréter une formule sans parenthèses.
@@ -41,6 +42,7 @@ let priority (c: char) : int = match c with
 	| '=' -> 2
 	| '>' -> 1
 	| _ -> raise Erreur_syntaxe (* c n'est pas un opérateur *)
+;;
 
 (* indice de l'opérateur le moins prioritaire parmis ceux
    qui ne sont pas entre parenthèses entre s.[i] et s.[j] 
@@ -70,6 +72,7 @@ let priority (c: char) : int = match c with
 					else 
 						find_op_paren (k+1) res (paren_lvl)
  	in find_op_paren i (-1) 0;;
+;;
 
 (* Renvoie une formule construite à partir de la chaîne s.
    Lève une exception Erreur_syntaxe si la chaîne ne représente pas une formule valide. *)
@@ -108,6 +111,7 @@ let parse (s: string) : formule =
 						| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
 						| _ -> raise Erreur_syntaxe
 	in parse_aux 0 (n -1)
+;;
 
 (* Renvoie une formule construire à partir du contenu du fichier fn.
    Lève une exception Erreur_syntaxe si le contenu du fichier n'est pas une formule valide.
@@ -125,6 +129,7 @@ let from_file (filename: string) : formule =
 	let f = open_in filename in 
 	let s = read_lines f in
 	parse s
+;;
 
 let rec compte_ops (f: formule) : int	=
 	match f with
@@ -140,6 +145,7 @@ let print_bool (b:bool) =
 		end
 	else begin print_string "false" end
 ;;
+
 let test_parse () =
 	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
 	assert (parse "(a & ~a) = F" = And(Or(Not(And(Var "a",Not(Var "a"))),Bot),Or(Not(Bot),And(Var "a",Not(Var "a")))));
@@ -147,8 +153,10 @@ let test_parse () =
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"
 ;;
+
 let test_from_file () =
 	assert(from_file("tests/test1.txt") = Or(Var "a", Top));
 	assert(from_file("tests/test2.txt") = And(Or(Var "a",Var "b"),Or(Not(Var "a"),Not(Var "b"))));
 	assert(try (let _ = from_file("tests/test4.txt") in false ) with Erreur_syntaxe -> true);
 	assert(try (let _ = from_file("tests/test 3") in false ) with Sys_error _ -> true);
+;;

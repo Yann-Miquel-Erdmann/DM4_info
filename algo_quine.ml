@@ -120,8 +120,8 @@ let quine (f:formule) : sat_result =
 ;;
 
 let rec print_true (v: valuation): unit =
-  
   match v with
   | [] -> ()
-  | (x,true)::q -> print_sting x ;print_sting "\n";print_true(q) 
-  | (x,false)::q -> print_true(q) 
+  | (x,true)::q -> print_string x; print_string "\n"; print_true q 
+  | (x,false)::q -> print_true q
+;;
