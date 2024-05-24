@@ -38,5 +38,6 @@ char* au_plus_une(char** l, int n){
             }
         }
     }
-    return "";
+    return string;
 }
+
