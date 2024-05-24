@@ -1,6 +1,5 @@
 open Valuation;;
 open Base_satsolver;;
-open Algo_quine;;
 
 let test () =
   assert ((Array.length Sys.argv) > 1);
@@ -36,27 +35,23 @@ let union (l1:'a list) (l2: 'a list): 'a list =
   in union_aux l1 l2 []
 ;;
 
-let test () =
-  assert ((Array.length Sys.argv) > 1);
-  assert (1 == 1);
-  assert (calculate_var (parse "T | (T & ~F)") == []);
-  Base_satsolver.test_parse();
-  print_string "tous les tests ont réussi\n"
+let rec in_list (v: 'a) (l:'a list) =
+  match l with
+  | [] -> false
+  | x::q -> if x = v then true else in_list v q
 ;;
 
-let main () =
-  if Array.length Sys.argv = 1 then failwith "Aucun argument" 
-  else
-    print_int (Array.length Sys.argv); print_string "\n\n";
-    print_string Sys.argv.(0); print_string "\n\n";
-    if Sys.argv.(1)="test" then 
-      test()
-    else 
-      let formule = from_file Sys.argv.(1) in
-      let valuation = quine formule in
-      match valuation with
-      | None -> print_string "La formule n'est pas satisfiable\n";
-      | Some v -> print_string "La formule est satisfiable en assignat 1 aux variables suivantes et 0 aux autres:\n"; print_true v
+let calculate_var (f:formule) : string list =
+  let rec calc_var_aux (f:formule) (l:string list) : string list =
+    match f with
+	| Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
+	| Not e -> calc_var_aux e l
+	| Top | Bot -> l
+  | Var x -> if not (in_list x l) then x::l else l
+  
+  in calc_var_aux f []
 ;;
 
-let _ = main()
+
+
+

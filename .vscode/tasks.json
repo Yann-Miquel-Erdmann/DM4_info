@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      
+      "command": "ocamlc",
+      "args": [
+        "base_satsolver.ml",
+        "valuation.ml",
+        "satsolver.ml",
+        "algo_quine.ml",
+        "algo_naif.ml",
+        "main.ml",
+        "-o",
+        "a.out"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/Ocaml"
+      },
+
+    },
+    {
+      "label": "run",
+      "type": "shell",
+      "command": "./a.out test"
+    },
+    {
+      "label": "build and run test",
+      "dependsOn": ["build", "run test"]
+    }
+  ]
+}
