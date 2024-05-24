@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "utils.h"
+#include "n_dames.h"
 
 int main(void){
-    char* l[] = {"A", "B", "(A & ~B)"};
-    printf("%s\n", au_moins_une(l, 3));
+    char* filename = "test.txt";
+    gen_formule_n_dames(4, filename);
 }
