@@ -1,6 +1,7 @@
 open Base_satsolver
 
 type valuation = (string*bool) list
+type sat_result = valuation option
 
 let rec interpret (f: formule) (v: valuation): bool = 
 	match f with
@@ -53,7 +54,24 @@ let valuation_next (v: valuation) : valuation option =
 	
 
 let test_valuation_next () = 
-  assert(valuation_next [("a", false); ("b", false)] == Some [("a", true); ("b", false)]);
-  assert(valuation_next [("a", true); ("b", false)] == Some [("a", false); ("b", true)]);
-  assert(valuation_next [("a", false); ("b", true)] == Some [("a", true); ("b", true)]);
-  assert(valuation_next [("a", true); ("b", true)] == None)
+
+  assert(valuation_next [("a", false); ("b", false)] = (Some [("a", true); ("b", false)]));
+  assert(valuation_next [("a", true); ("b", false)] = Some [("a", false); ("b", true)]);
+  assert(valuation_next [("a", false); ("b", true)] = Some [("a", true); ("b", true)]);
+  assert(valuation_next [("a", true); ("b", true)] = None)
+
+
+let valuation_init (l: string list) : valuation = 
+	List.map (fun x -> (x,false)) l
+
+let test_valuation_init () = 
+	assert(valuation_init ["a"; "b"] = [("a", false); ("b", false)]);
+	assert(valuation_init ["a"; "b"; "c"] = [("a", false); ("b", false); ("c", false)]);
+	assert(valuation_init ["a"] = [("a", false)])
+
+
+let rec print_valuation (v:valuation option): unit = 
+	match v with
+	| None -> print_string "La formule n'a pas de solutions\n"
+	| Some [] -> ()
+	| Some ((name,value)::q) -> print_string (name); print_string " = "; print_bool value; print_string "\n"; print_valuation (Some q) 

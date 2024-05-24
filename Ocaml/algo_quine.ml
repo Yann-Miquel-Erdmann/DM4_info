@@ -1,24 +1,6 @@
 open Base_satsolver;;
 open Valuation;;
-
-type sat_result = valuation option;;
-
-let rec in_list (v: 'a) (l:'a list) =
-  match l with
-  | [] -> false
-  | x::q -> if x == v then true else in_list v q
-;;
-
-let calculate_var (f:formule) : formule list =
-  let rec calc_var_aux (f:formule) (l:formule list) : formule list =
-    match f with
-    | Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
-    | Not e -> calc_var_aux e l
-    | Top | Bot -> l
-    | Var x -> if not (in_list (Var x) l) then (Var x)::l else l
-  
-  in calc_var_aux f []
-;;
+open Satsolver;;
 
 let rec simpl_step (f:formule) : formule * bool =
   match f with
@@ -110,18 +92,7 @@ let quine (f:formule) : sat_result =
       | None -> quine_aux (subst f x Bot) q ((x, false)::v)
       | Some v -> Some v
   in quine_aux f (
-    let rec string_from_var (f:formule list) (s: string list) : string list =
-      match f with
-      | [] -> s
-      | (Var x)::q -> string_from_var q (x::s)
-      | _ -> failwith "pas bon"
-    in string_from_var (calculate_var f) []
+    calculate_var f
   ) []
 ;;
 
-let rec print_true (v: valuation): unit =
-  match v with
-  | [] -> ()
-  | (x,true)::q -> print_string x; print_string "\n"; print_true q 
-  | (x,false)::q -> print_true q
-;;
