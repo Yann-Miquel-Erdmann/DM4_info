@@ -21,9 +21,9 @@ char* au_moins_une(char** l, int n){
 }
 
 char* une_seule(char** l, int n){
-    int taille = n+2 + n*2 + n*(n+1);
+    int taille = 2 + 2*n + n-1 + 2*n*(n-1) + 1; // parenthese debut et fin; les () ; les | ; les ~ et les & et le \0
     for (int i = 0; i<n; i++){
-        taille += n*strlen(l[i]);
+        taille += n*strlen(l[i]); // pour les variables qui vont apparaite n fois
     }
     char* string = malloc(taille*sizeof(char));
     string[0] = '(';

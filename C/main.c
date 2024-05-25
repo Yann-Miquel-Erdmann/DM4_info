@@ -4,5 +4,5 @@
 
 int main(void){
     char* filename = "test.txt";
-    gen_formule_n_dames(4, filename);
+    gen_formule_n_dames(4 , filename);
 }

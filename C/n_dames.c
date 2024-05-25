@@ -193,8 +193,12 @@ void gen_formule_n_dames(int n, char* filename){
             strcat(result, "&");
             printf("added &\n");
         }
+        free(l[i]);
     }
+    free(l);
     FILE* file = fopen(filename, "w");
     fprintf(file, "%s", result);
+    fclose(file);
     printf("%s\n", result);
+    free(result);
 }
