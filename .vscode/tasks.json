@@ -2,9 +2,15 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "clean",
+      "type": "shell",
+      "command": "find . \\( -name \"*.o\" -o -name \"*.out\" -o -name \"*.cmi\" -o -name \"*.cmx\" -o -name \"*.cmo\" \\) -type f -delete",
+      "args": []
+    },
+    {
       "label": "build",
       "type": "shell",
-      
+
       "command": "ocamlopt",
       "args": [
         "base_satsolver.ml",
@@ -18,8 +24,7 @@
       ],
       "options": {
         "cwd": "${workspaceFolder}/Ocaml"
-      },
-
+      }
     },
     {
       "label": "run",
