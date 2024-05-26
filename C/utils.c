@@ -20,6 +20,18 @@ char* au_moins_une(char** l, int n){
     return string;
 }
 
+char* implique(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr2);
+    strcat(result, "|~");
+    strcat(result, expr1);
+    strcat(result, ")");
+    return result;
+}
+
 char* une_seule(char** l, int n){
     int taille = 2 + 2*n + n-1 + 2*n*(n-1) + 1; // parenthese debut et fin; les () ; les | ; les ~ et les & et le \0
     for (int i = 0; i<n; i++){
