@@ -22,10 +22,10 @@ char* au_moins_une(char** l, int n) {
 }
 
 char* une_seule(char** l, int n) {
-    int taille = 2 + 2 * n + n - 1 + 2 * n * (n - 1) + 1;  // parenthese debut et fin; les () ; les | ; les ~ et les & et le \0
+    int taille = 2 + 2 * n + n - 1 + 2 * n * (n - 1) + 1;  // parenthèse debut et fin; les () ; les | ; les ~ et les & et le \0
     for (int i = 0; i < n; i++) {
         // printf("%d\n", i);
-        taille += n * strlen(l[i]);  // pour les variables qui vont apparaite n fois
+        taille += n * strlen(l[i]);  // pour les variables qui vont apparaît n fois
     }
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
