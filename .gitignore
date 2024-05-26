@@ -1,5 +1,7 @@
 a.out
 *.cmi
 *.cmo
+*.cmx
+*.o
 satsolver
 .vscode/settings.json

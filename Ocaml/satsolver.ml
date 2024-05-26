@@ -35,7 +35,7 @@ let union (l1:'a list) (l2: 'a list): 'a list =
   in union_aux l1 l2 []
 ;;
 
-let rec in_list (v: 'a) (l:'a list) =
+let rec in_list (v: 'a) (l:'a list) : bool =
   match l with
   | [] -> false
   | x::q -> if x = v then true else in_list v q
@@ -44,11 +44,10 @@ let rec in_list (v: 'a) (l:'a list) =
 let calculate_var (f:formule) : string list =
   let rec calc_var_aux (f:formule) (l:string list) : string list =
     match f with
-	| Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
-	| Not e -> calc_var_aux e l
-	| Top | Bot -> l
-  | Var x -> if not (in_list x l) then x::l else l
-  
+    | Or (g, d) | And (g, d) -> calc_var_aux d (calc_var_aux g l)
+    | Not e -> calc_var_aux e l
+    | Top | Bot -> l
+    | Var x -> if not (in_list x l) then x::l else l
   in calc_var_aux f []
 ;;
 

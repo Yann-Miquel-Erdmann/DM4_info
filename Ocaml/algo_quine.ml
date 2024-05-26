@@ -32,7 +32,7 @@ let rec simpl_step (f:formule) : formule * bool =
 
 let rec simpl_step_2 (f:formule) : formule * bool =
   match f with
-  | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2,true
+  | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2, true
   | And (f2, Bot) | And (Bot, f2) -> Bot, true
   | Or (Top, f2) | Or (f2, Top) -> Top, true
   | Not Not f2 -> f2,true
@@ -45,7 +45,7 @@ let rec simpl_step_2 (f:formule) : formule * bool =
       if b1 || b2 then
         simpl_step_2 (And(f1, f2))
       else
-        And(f1, f2), b1||b2
+        And(f1, f2), false
     end
   | Or (f1, f2) ->
     begin 
@@ -76,23 +76,27 @@ let rec subst (f:formule) (var:string) (g:formule) : formule=
 	| Not f1 -> Not (subst f1 var g)
 ;;
 
-
 let rec simpl_full (f:formule) : formule =
-  let a, b = simpl_step f in
-  if b then simpl_full a
-  else f
+  let a, _ = simpl_step_2 f in
+  a
 ;;
 
 let quine (f:formule) : sat_result =
-  let rec quine_aux (f: formule) (l: string list) (v: valuation) : sat_result = 
+  let v = calculate_var f in
+
+  let rec quine_aux (f: formule) (l: string list) (v: valuation) : sat_result =
     match l with
     | [] -> if simpl_full f = Top then Some v else None
     | x::q -> 
-      match quine_aux (subst f x Top) q ((x, true)::v) with
-      | None -> quine_aux (subst f x Bot) q ((x, false)::v)
-      | Some v -> Some v
-  in quine_aux f (
-    calculate_var f
-  ) []
+      match simpl_full f with
+      | Top -> Some v
+      | Bot -> None
+      | f2 -> 
+        begin
+          match quine_aux (subst f2 x Top) q ((x, true)::v) with
+          | None -> quine_aux (subst f2 x Bot) q ((x, false)::v)
+          | Some v -> Some v
+        end
+  in quine_aux f v []
 ;;
 

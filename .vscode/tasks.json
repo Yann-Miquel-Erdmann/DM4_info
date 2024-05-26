@@ -5,7 +5,7 @@
       "label": "build",
       "type": "shell",
       
-      "command": "ocamlc",
+      "command": "ocamlopt",
       "args": [
         "base_satsolver.ml",
         "valuation.ml",

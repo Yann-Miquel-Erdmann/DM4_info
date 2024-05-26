@@ -77,6 +77,7 @@ let priority (c: char) : int = match c with
 (* Renvoie une formule construite à partir de la chaîne s.
    Lève une exception Erreur_syntaxe si la chaîne ne représente pas une formule valide. *)
 let parse (s: string) : formule =
+	print_string "parsing file..."; print_newline ();
 	let n = String.length s in
 	(* construit une formule à partir de s[i..j] *)
 	let rec parse_aux (i: int) (j:int) =
@@ -127,7 +128,8 @@ let from_file (filename: string) : formule =
 			| End_of_file -> ""
 	in
 	let f = open_in filename in 
-	let s = read_lines f in
+	let s = print_string "reading file..."; print_newline (); read_lines f in
+	print_string "done\n"; print_newline ();
 	parse s
 ;;
 
@@ -147,7 +149,7 @@ let print_bool (b:bool) =
 ;;
 
 let test_parse () =
-	assert (parse "a | (b & ~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
+	assert (parse "a|(b&~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
 	assert (parse "(a & ~a) = F" = And(Or(Not(And(Var "a",Not(Var "a"))),Bot),Or(Not(Bot),And(Var "a",Not(Var "a")))));
 	print_bool (try (let _ = parse "a = = " in false ) with Erreur_syntaxe -> true);
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);

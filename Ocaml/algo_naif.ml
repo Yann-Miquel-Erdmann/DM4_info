@@ -9,9 +9,10 @@ let satsolver_naif (f:formule): sat_result =
 		| Some v1 -> if interpret f1 v1 then Some v1 else satsolver_naif_inner f1 (valuation_next v1)
 	
 	in satsolver_naif_inner f (Some(valuation_init (calculate_var f) ))
-
+;;
 
 let test_satsolver_naif () = 
 	assert(satsolver_naif (And (Var "a" ,Var "a")) == Some [("a", true)]);
 	assert(satsolver_naif (Top) = Some []);
 	assert(satsolver_naif (Bot) = None);
+;;

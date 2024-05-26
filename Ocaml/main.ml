@@ -22,8 +22,6 @@ let test () =
 let main () =
   if Array.length Sys.argv = 1 then failwith "Aucun argument" 
   else
-    print_int (Array.length Sys.argv); print_string "\n\n";
-    print_string Sys.argv.(0); print_string "\n\n";
     if Sys.argv.(1)="test" then 
       test()
     else
@@ -31,6 +29,8 @@ let main () =
         print_valuation (Algo_naif.satsolver_naif (Base_satsolver.from_file Sys.argv.(2)))
       else
       let formule = from_file Sys.argv.(1) in
+      print_string "done\n"; print_newline ();
+      print_string "testing valuations..."; print_newline();
       print_valuation (quine formule)
 ;;
 
