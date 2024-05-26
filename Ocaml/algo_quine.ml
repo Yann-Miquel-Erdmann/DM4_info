@@ -4,67 +4,41 @@ open Satsolver;;
 
 let rec simpl_step (f:formule) : formule * bool =
   match f with
-  | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2,true
   | And (f2, Bot) | And (Bot, f2) -> Bot, true
   | Or (Top, f2) | Or (f2, Top) -> Top, true
-  | Not Not f2 -> f2,true
   | Not Top -> Bot, true
   | Not Bot -> Top, true
+  | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> simpl_step f2
+  | Not Not f2 -> simpl_step f2
   | And (f1, f2) ->
     begin 
       let f1, b1 = simpl_step f1 in
       let f2, b2 = simpl_step f2 in
-      And(f1, f2), b1||b2
-    end
-  | Or (f1, f2) ->
-    begin 
-      let f1, b1 = simpl_step f1 in
-      let f2, b2 = simpl_step f2 in
-      Or(f1, f2), b1||b2
-    end
-  | Not f1 ->
-    begin
-      let f1, b = simpl_step f1 in
-      Not f1, b
-    end
-  | _ -> f, false
-;;
-
-let rec simpl_step_2 (f:formule) : formule * bool =
-  match f with
-  | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> f2, true
-  | And (f2, Bot) | And (Bot, f2) -> Bot, true
-  | Or (Top, f2) | Or (f2, Top) -> Top, true
-  | Not Not f2 -> f2,true
-  | Not Top -> Bot, true
-  | Not Bot -> Top, true
-  | And (f1, f2) ->
-    begin 
-      let f1, b1 = simpl_step_2 f1 in
-      let f2, b2 = simpl_step_2 f2 in
       if b1 || b2 then
-        simpl_step_2 (And(f1, f2))
+        simpl_step (And(f1, f2))
       else
         And(f1, f2), false
     end
   | Or (f1, f2) ->
     begin 
-      let f1, b1 = simpl_step_2 f1 in
-      let f2, b2 = simpl_step_2 f2 in
-      if b1|| b2 then
-        simpl_step_2 (Or(f1, f2))
-      else 
+      let f1, b1 = simpl_step f1 in
+      let f2, b2 = simpl_step f2 in
+      if b1 || b2 then
+        simpl_step (Or(f1, f2))
+      else
         Or(f1, f2), false
     end
   | Not f1 ->
     begin
-      let f1, b = simpl_step_2 f1 in
+      let f1, b = simpl_step f1 in
       if b then
-        simpl_step_2 (Not f1)
+        let f2, _ = simpl_step (Not f1) in f2, true
       else 
         Not f1, b
     end
-  | _ -> f, false
+  | Top -> Top, true
+  | Bot -> Bot, true
+  | Var _ -> f, false
 ;;
 
 let rec subst (f:formule) (var:string) (g:formule) : formule=
@@ -77,7 +51,7 @@ let rec subst (f:formule) (var:string) (g:formule) : formule=
 ;;
 
 let rec simpl_full (f:formule) : formule =
-  let a, _ = simpl_step_2 f in
+  let a, _ = simpl_step f in
   a
 ;;
 
