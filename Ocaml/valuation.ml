@@ -78,3 +78,4 @@ let rec print_valuation (v:valuation option): unit =
 	| Some ((name,true)::q) -> print_string (name); print_string " = true\n"; print_valuation (Some q) 
 	| Some (_::q) -> print_valuation (Some q)
 ;;
+

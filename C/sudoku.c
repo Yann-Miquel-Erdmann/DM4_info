@@ -30,7 +30,7 @@ Un seul par carré
 _ _ 1 _
 2 _ 4 _
 
-1 _ 
+1 _
 
 1 2 3 4
 4 3 2 1
@@ -42,7 +42,7 @@ _ _ 1 _
 
 char* initialisation_grille() {
     // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
-    char* string = "(0_0_0)\0";
+    char* string = "(0_0_6&0_1_7&0_3_3&0_5_5&0_7_1&0_8_2&1_0_1&1_2_4&1_6_6&1_7_5&2_1_5&2_2_2&2_3_1&3_2_7&3_3_0&3_6_8&4_1_0&4_3_7&4_4_2&5_0_4&5_6_2&5_7_0&6_4_5&6_6_4&6_7_4&7_2_5&7_4_0&7_5_1&7_7_8&8_0_7&8_1_8&8_2_1&8_5_2&8_6_5&8_7_0)\0";
     return string;
 }
 
@@ -55,7 +55,6 @@ char* lignes(int largeur, int hauteur) {
             for (int j = 0; j < largeur; j++) {
                 contraintes_ligne_valeur[j] = malloc(10 * sizeof(char));
                 sprintf(contraintes_ligne_valeur[j], "%d_%d_%d", i, j, k);
-                printf("%s\n", contraintes_ligne_valeur[j]);
             }
             contrainte_ligne[k] = une_seule(contraintes_ligne_valeur, largeur);
             for (int j = 0; j < largeur; j++) {
@@ -63,14 +62,18 @@ char* lignes(int largeur, int hauteur) {
             }
             free(contraintes_ligne_valeur);
         }
-        contraintes[i] = et(contrainte_ligne, largeur);
-        for (int k = 0; k<largeur; k++){
+        contraintes[i] = et_liste(contrainte_ligne, largeur);
+        for (int k = 0; k < largeur; k++) {
             free(contrainte_ligne[k]);
         }
         free(contrainte_ligne);
     }
-
-    return et(contraintes, hauteur);
+    char* res = et_liste(contraintes, hauteur);
+    for (int i = 0; i < hauteur; i++) {
+        free(contraintes[i]);
+    }
+    free(contraintes);
+    return res;
 }
 
 char* colones(int largeur, int hauteur) {
@@ -82,7 +85,6 @@ char* colones(int largeur, int hauteur) {
             for (int i = 0; i < hauteur; i++) {
                 contraintes_colonne_valeur[i] = malloc(10 * sizeof(char));
                 sprintf(contraintes_colonne_valeur[i], "%d_%d_%d", i, j, k);
-                printf("%s\n", contraintes_colonne_valeur[i]);
             }
             contrainte_colone[k] = une_seule(contraintes_colonne_valeur, hauteur);
             for (int j = 0; j < largeur; j++) {
@@ -90,13 +92,18 @@ char* colones(int largeur, int hauteur) {
             }
             free(contraintes_colonne_valeur);
         }
-        contraintes[j] = et(contrainte_colone, hauteur);
+        contraintes[j] = et_liste(contrainte_colone, hauteur);
         for (int k = 0; k < largeur; k++) {
             free(contrainte_colone[k]);
         }
         free(contrainte_colone);
     }
-    return et(contraintes, largeur);
+    char* res = et_liste(contraintes, largeur);
+    for (int i = 0; i < largeur; i++) {
+        free(contraintes[i]);
+    }
+    free(contraintes);
+    return res;
 }
 
 char* cases(int largeur, int hauteur) {
@@ -115,15 +122,18 @@ char* cases(int largeur, int hauteur) {
             free(contraintes_case);
         }
     }
-    return et(contraintes, largeur * hauteur);
+    char* res = et_liste(contraintes, largeur * hauteur);
+    for (int i = 0; i < hauteur * largeur; i++) {
+        free(contraintes[i]);
+    }
+    free(contraintes);
+    return res;
 }
 
 char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     char** contraintes = malloc((largeur / largeur_boite) * (hauteur / hauteur_boite) * sizeof(char*));
     for (int i = 0; i < hauteur / hauteur_boite; i += 1) {
-        printf("i = %d\n", i);
         for (int j = 0; j < largeur / largeur_boite; j += 1) {
-            printf("j = %d\n", j);
             char** contraintes_boite = malloc(largeur * sizeof(char*));
             for (int k = 0; k < largeur; k++) {
                 char** contraintes_boite_valeur = malloc(largeur_boite * hauteur_boite * sizeof(char*));
@@ -134,26 +144,31 @@ char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
                     }
                 }
                 contraintes_boite[k] = une_seule(contraintes_boite_valeur, largeur);
-                for (int k = 0; k < largeur_boite*hauteur_boite; k++) {
+                for (int k = 0; k < largeur_boite * hauteur_boite; k++) {
                     free(contraintes_boite_valeur[k]);
                 }
                 free(contraintes_boite_valeur);
             }
-            contraintes[i * hauteur_boite + j] = et(contraintes_boite, largeur);
+            contraintes[i * hauteur_boite + j] = et_liste(contraintes_boite, largeur);
             for (int k = 0; k < largeur; k++) {
                 free(contraintes_boite[k]);
             }
             free(contraintes_boite);
         }
     }
-    return et(contraintes, (largeur / largeur_boite) * (hauteur / hauteur_boite));
+    char* res = et_liste(contraintes, (largeur / largeur_boite) * (hauteur / hauteur_boite));
+    for (int i = 0; i < (largeur / largeur_boite) * (hauteur / hauteur_boite); i++) {
+        free(contraintes[i]);
+    }
+    free(contraintes);
+    return res;
 }
 
 int main(int argc, char* argv[]) {
-    int largeur = 2;
-    int hauteur = 2;
-    int largeur_boite = 2;
-    int hauteur_boite = 1;
+    int largeur = 9;
+    int hauteur = 9;
+    int largeur_boite = 3;
+    int hauteur_boite = 3;
     char* string = initialisation_grille();
     char** contraintes = malloc(5 * sizeof(char*));
     contraintes[0] = string;
@@ -161,12 +176,12 @@ int main(int argc, char* argv[]) {
     contraintes[2] = colones(largeur, hauteur);
     contraintes[3] = cases(largeur, hauteur);
     contraintes[4] = boites(largeur, hauteur, largeur_boite, hauteur_boite);
-    char* contraintes_totales = et(contraintes, 5);
+    char* contraintes_totales = et_liste(contraintes, 5);
     // printf("%s\n", contraintes[3]);
     FILE* file = fopen("sudoku.txt", "w+");
     fprintf(file, "%s\n", contraintes_totales);
     fclose(file);
-    for (int i = 1; i< 5; i++){
+    for (int i = 1; i < 5; i++) {
         free(contraintes[i]);
     }
     free(contraintes);

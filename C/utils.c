@@ -1,4 +1,5 @@
 #include "utils.h"
+
 #include <strings.h>
 
 char* au_moins_une(char** l, int n) {
@@ -91,7 +92,7 @@ char* au_plus_une(char** l, int n) {
 char* aucun(char** l, int n) {
     int taille = 2 + n + (n - 1) + 2;  // les () les ~ et les & et le \0
     for (int i = 0; i < n; i++) {
-        taille += strlen(l[i]); 
+        taille += strlen(l[i]);
     }
     printf("%d\n", taille);
     char* string = malloc(taille * sizeof(char));
@@ -110,7 +111,7 @@ char* aucun(char** l, int n) {
     return string;
 }
 
-char* et(char** l, int n) {
+char* et_liste(char** l, int n) {
     int taille = 3 + n;  // les () et les & et le \0
     for (int i = 0; i < n; i++) {
         taille += strlen(l[i]);
@@ -128,7 +129,7 @@ char* et(char** l, int n) {
     return string;
 }
 
-char* ou(char** l, int n) {
+char* ou_liste(char** l, int n) {
     int taille = 3 + n;  // les () et les | et le \0
     for (int i = 0; i < n; i++) {
         taille += strlen(l[i]);
@@ -142,6 +143,31 @@ char* ou(char** l, int n) {
             strcat(string, "|");
         }
     }
+    strcat(string, ")");
+    return string;
+}
+
+
+char* et(char* f1, char* f2) {
+    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les & et le \0
+    char* string = malloc(taille * sizeof(char));
+    string[0] = '(';
+    string[1] = '\0';
+    strcat(string, f1);
+    strcat(string, "&");
+    strcat(string, f2);
+    strcat(string, ")");
+    return string;
+}
+
+char* ou(char* f1, char* f2) {
+    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les | et le \0
+    char* string = malloc(taille * sizeof(char));
+    string[0] = '(';
+    string[1] = '\0';
+    strcat(string, f1);
+    strcat(string, "|");
+    strcat(string, f2);
     strcat(string, ")");
     return string;
 }
