@@ -32,13 +32,20 @@ let rec simpl_step (f:formule) : formule * bool =
     begin
       let f1, b = simpl_step f1 in
       if b then
-        let f2, _ = simpl_step (Not f1) in f2, true
+        simpl_step (Not f1)
       else 
         Not f1, b
     end
   | Top -> Top, true
   | Bot -> Bot, true
-  | Var _ -> f, false
+  | Var x -> f, false
+;;
+
+let rec print_val (v:valuation) : unit =
+  match v with
+  | [] -> ();
+  | (s, true)::q -> print_string s; print_string " <- 1"; print_newline(); print_val q
+  | _::q -> print_val q
 ;;
 
 let rec subst (f:formule) (var:string) (g:formule) : formule=
@@ -50,27 +57,51 @@ let rec subst (f:formule) (var:string) (g:formule) : formule=
 	| Not f1 -> Not (subst f1 var g)
 ;;
 
+let simpl_time = ref 0.;;
+let subst_time = ref 0.;;
+
 let rec simpl_full (f:formule) : formule =
+  let time0 = Sys.time() in 
   let a, _ = simpl_step f in
+  let end0 = Sys.time () in
+  simpl_time := !simpl_time +. end0 -. time0;
   a
 ;;
+
+let total = ref 0.;;
+let progress_string = ref "" ;;
+
+let count = ref 0;;
+
+let progress_bar () : unit =
+  progress_string := "";
+  for i = 0 to 40 do if (float_of_int i)*.0.025 <= !total then progress_string := !progress_string^"#" else progress_string := !progress_string^"." done;
+  Printf.printf "%c[%s] %d %f%%" '\r' !progress_string !count (!total*.100.)
+;;
+
 
 let quine (f:formule) : sat_result =
   let v = calculate_var f in
 
-  let rec quine_aux (f: formule) (l: string list) (v: valuation) : sat_result =
+  let rec quine_aux (f: formule) (l: string list) (v: valuation) (value: float) (inc:float): sat_result =
+    progress_bar();
+    count := !count + 1;
     match l with
-    | [] -> if simpl_full f = Top then Some v else None
+    | [] -> if simpl_full f = Top then begin total := 1.; progress_bar(); print_newline(); Some v end else None
     | x::q -> 
       match simpl_full f with
-      | Top -> Some v
+      | Top -> total := 1.; progress_bar(); print_newline(); Some v
       | Bot -> None
       | f2 -> 
         begin
-          match quine_aux (subst f2 x Top) q ((x, true)::v) with
-          | None -> quine_aux (subst f2 x Bot) q ((x, false)::v)
+          match quine_aux (subst f2 x Top) q ((x, true)::v) (value-.inc) (inc/.2.) with
+          | None -> total := value; quine_aux (subst f2 x Bot) q ((x, false)::v) (value+.inc) (inc/.2.)
           | Some v -> Some v
         end
-  in quine_aux f v []
+  in progress_bar(); quine_aux f v [] 0.5 0.25
+;;
+
+let linearise (f: formule) : formule =
+  f
 ;;
 
