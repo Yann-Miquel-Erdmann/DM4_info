@@ -44,6 +44,7 @@ pour toute région i:
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "utils.h"
 
 void initialiser(int** voisins, int* voisin_tailles) {
@@ -141,10 +142,10 @@ void initialiser(int** voisins, int* voisin_tailles) {
     initialiser(voisins, voisins_taille);
 
     char** regions = malloc(n * sizeof(char*));
-    for (int i = 0; i<n; i++) {
+    for (int i = 0; i < n; i++) {
         regions[i] = malloc(100 * sizeof(char));
         char** couleurs = malloc(nb_couleurs * sizeof(char*));
-        char** contrainte_couleurs_voisins = malloc((nb_couleurs+1) * sizeof(char*));
+        char** contrainte_couleurs_voisins = malloc((nb_couleurs + 1) * sizeof(char*));
         for (int k = 0; k < nb_couleurs; k++) {
             couleurs[k] = malloc(10 * sizeof(char));
             sprintf(couleurs[k], "%d_%d", i, k);
@@ -154,27 +155,25 @@ void initialiser(int** voisins, int* voisin_tailles) {
                 couleur_voisins[j] = malloc(10 * sizeof(char));
                 sprintf(couleur_voisins[j], "%d_%d", voisins[i][j], k);
             }
-            
-            
+
             char** contrainte_et = malloc(2 * sizeof(char*));
-            if (voisins_taille[i]>0){
+            if (voisins_taille[i] > 0) {
                 contrainte_et[0] = aucun(couleur_voisins, voisins_taille[i]);
-            }else{
+            } else {
                 contrainte_et[0] = "T";
             }
 
             contrainte_et[1] = couleurs[k];
-            
-            contrainte_couleurs_voisins[k] = et(contrainte_et, 2);
 
+            contrainte_couleurs_voisins[k] = et_liste(contrainte_et, 2);
         }
-        char** contraintes_region = malloc(2* sizeof(char*));
-        contraintes_region[0]  = une_seule(couleurs, nb_couleurs);
-        contraintes_region[1] = ou(contrainte_couleurs_voisins, nb_couleurs);
+        char** contraintes_region = malloc(2 * sizeof(char*));
+        contraintes_region[0] = une_seule(couleurs, nb_couleurs);
+        contraintes_region[1] = ou_liste(contrainte_couleurs_voisins, nb_couleurs);
 
-        regions[i] = et(contraintes_region, 2);
+        regions[i] = et_liste(contraintes_region, 2);
     }
-    char* contraintes = et(regions, n);
+    char* contraintes = et_liste(regions, n);
     printf("%s\n", contraintes);
 }
 */
