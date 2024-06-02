@@ -40,7 +40,7 @@ _ _ 1 _
 
 */
 
-char* initialisation_grille() {
+char* initialisation_grille(void) {
     // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
     char* string = "(0_0_0)\0";
     return string;
@@ -149,7 +149,7 @@ char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     return et(contraintes, (largeur / largeur_boite) * (hauteur / hauteur_boite));
 }
 
-int main(int argc, char* argv[]) {
+/* int main(int argc, char* argv[]) {
     int largeur = 2;
     int hauteur = 2;
     int largeur_boite = 2;
@@ -172,3 +172,4 @@ int main(int argc, char* argv[]) {
     free(contraintes);
     free(contraintes_totales);
 }
+*/

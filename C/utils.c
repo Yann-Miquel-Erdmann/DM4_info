@@ -26,9 +26,33 @@ char* implique(char* expr1, char* expr2){
     char* result = malloc(taille*sizeof(char));
     result[0] = '(';
     result[1] = '\0';
-    strcat(result, expr2);
-    strcat(result, "|~");
     strcat(result, expr1);
+    strcat(result, ">");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
+}
+
+char* equivalent(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, "=");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
+}
+
+char* non_equivalent(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, "!");
+    strcat(result, expr2);
     strcat(result, ")");
     return result;
 }
@@ -99,6 +123,15 @@ char* au_plus_une(char** l, int n) {
     return string;
 }
 
+char* not(char* expr){
+    int taille = (int)strlen(expr) + 2; // en plus le ~ et le \0
+    char* string = malloc(taille*sizeof(char));
+    string[0] = '~';
+    string[1] = '\0';
+    strcat(string, expr);
+    return string;
+}
+
 char* aucun(char** l, int n) {
     int taille = 2 + n + (n - 1) + 2;  // les () les ~ et les & et le \0
     for (int i = 0; i < n; i++) {
@@ -155,4 +188,16 @@ char* ou(char** l, int n) {
     }
     strcat(string, ")");
     return string;
+}
+
+char* et_2_expr(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 4; // (), & et \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, "&");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
 }

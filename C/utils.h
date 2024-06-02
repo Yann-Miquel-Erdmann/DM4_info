@@ -12,7 +12,10 @@ char* une_seule(char** l, int n);
 char* au_plus_une(char** l, int n);
 char* aucun(char** l, int n);
 char* implique(char* expr1, char* expr2);
-
+char* equivalent(char* expr1, char* expr2);
+char* non_equivalent(char* expr1, char* expr2);
+char* et_2_expr(char* expr1, char* expr2);
+char* not(char* expr);
 char* et(char** l, int n);  // le et logique de n formules
 char* ou(char** l, int n);  // le et logique de n formules
 

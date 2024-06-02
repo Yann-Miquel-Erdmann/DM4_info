@@ -133,7 +133,7 @@ void initialiser(int** voisins, int* voisin_tailles) {
     voisin_tailles[12] = 2;
 }
 
-void main() {
+/*void main() {
     int n = 13;
     int nb_couleurs = 4;
     int** voisins = malloc(n * sizeof(int*));
@@ -177,3 +177,4 @@ void main() {
     char* contraintes = et(regions, n);
     printf("%s\n", contraintes);
 }
+*/
