@@ -2,6 +2,7 @@ open Satsolver
 open Base_satsolver
 open Valuation
 
+(* algorithme naif qui teste toutes les valuations jusqu'a trouver la solution *)
 let satsolver_naif (f:formule): sat_result = 
 	let rec satsolver_naif_inner (f1:formule) (v:valuation option): sat_result = 
 		match v with
@@ -11,6 +12,7 @@ let satsolver_naif (f:formule): sat_result =
 	in satsolver_naif_inner f (Some(valuation_init (calculate_var f) ))
 ;;
 
+(* tests sur des petites formules *)
 let test_satsolver_naif () = 
 	assert(satsolver_naif (And (Var "a" ,Var "a")) == Some [("a", true)]);
 	assert(satsolver_naif (Top) = Some []);

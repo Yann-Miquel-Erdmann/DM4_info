@@ -11,6 +11,8 @@ type formule =
 let implique (f1, f2) = Or(Not f1, f2)
 let equivalence (f1, f2) = And(implique (f1, f2), implique (f2, f1))
 
+let non_equivalence (f1, f2) = Not (equivalence (f1, f2);)
+
 (*** PARSER ***)
 
 exception Erreur_syntaxe
@@ -24,11 +26,12 @@ exception Fichier_invalide
 	'~' -> Not
 	'>' -> implication
 	'=' -> equivalence
+	'!' -> non équivalence
  *)
 
 (* Détermine si c correspond à un opérateur binaire logique *)
 let is_binop (c: char) : bool = match c with 
-	| '&' |  '|' |  '>' |  '='  -> true
+	| '&' | '|' | '>' | '=' | '!' -> true
 	| _ -> false 
 ;;
 
@@ -37,8 +40,9 @@ let is_binop (c: char) : bool = match c with
 	Par exemple, "x&y|z" sera interprété comme "(x&y)|z"
 	car & est plus prioritaire que | *)
 let priority (c: char) : int = match c with
-	| '&' -> 4
-	| '|' -> 3
+	| '&' -> 5
+	| '|' -> 4
+	| '!' -> 3
 	| '=' -> 2
 	| '>' -> 1
 	| _ -> raise Erreur_syntaxe (* c n'est pas un opérateur *)
@@ -110,6 +114,7 @@ let parse (s: string) : formule =
 						| '|' -> Or(parse_aux i (k-1), parse_aux (k+1) j)
 						| '=' -> equivalence(parse_aux i (k-1), parse_aux (k+1) j)
 						| '>' -> implique(parse_aux i (k-1), parse_aux (k+1) j)
+						| '!' -> non_equivalence(parse_aux i (k-1), parse_aux (k+1) j)
 						| _ -> raise Erreur_syntaxe
 	in parse_aux 0 (n -1)
 ;;
@@ -148,9 +153,10 @@ let print_bool (b:bool) =
 	else begin print_string "false" end
 ;;
 
+(* fonctions de tests *)
 let test_parse () =
 	assert (parse "a|(b&~c)" = Or(Var "a", And(Var "b", Not (Var "c"))));
-	assert (parse "(a & ~a) = F" = And(Or(Not(And(Var "a",Not(Var "a"))),Bot),Or(Not(Bot),And(Var "a",Not(Var "a")))));
+	assert (parse "(a & ~a) = T" = And(Or(Not(And(Var "a",Not(Var "a"))),Top),Or(Not(Bot),And(Var "a",Not(Var "a")))));
 	print_bool (try (let _ = parse "a = = " in false ) with Erreur_syntaxe -> true);
 	assert (compte_ops (parse "x | (y &  ~z)") = 3);
 	print_string "Tests OK\n"

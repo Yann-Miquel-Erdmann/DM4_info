@@ -4,6 +4,7 @@ open Algo_naif
 open Algo_quine
 open Valuation
 
+(* lance les tests *)
 let test () =
   assert ((Array.length Sys.argv) > 1);
   assert (1 == 1);
@@ -26,8 +27,10 @@ let main () =
       test()
     else
       if Sys.argv.(1)= "naif" then
+        (* cherche la valuation sur l'algoruthme naif *)
         print_valuation (Algo_naif.satsolver_naif (Base_satsolver.from_file Sys.argv.(2)))
       else
+        (* cherche la valuation sur l'algorithme de quine *)
       print_string "file: "; print_string Sys.argv.(1);print_newline(); print_newline();
       let formule = from_file Sys.argv.(1) in
       print_string "done\n"; print_newline ();
