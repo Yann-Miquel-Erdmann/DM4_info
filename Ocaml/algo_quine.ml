@@ -42,8 +42,8 @@ let simpl_full (f:formule) : formule =
         else 
           Not f1, b
       end
-    | Top -> Top, true
-    | Bot -> Bot, true
+    | Top -> Top, false
+    | Bot -> Bot, false
     | Var x -> f, false
     in 
   let time0 = Sys.time() in 
@@ -96,7 +96,7 @@ let quine (f:formule) : sat_result =
     | x::q -> 
       match simpl_full f with
       | Top -> total := 1.; progress_bar(); print_newline(); Some v
-      | Bot ->None
+      | Bot -> None
       | f2 -> 
         begin
           match quine_aux (subst f2 x Top) q ((x, true)::v) (value-.inc) (inc/.2.) with
