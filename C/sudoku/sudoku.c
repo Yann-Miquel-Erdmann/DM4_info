@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "../utils.h"
 
 /*
 Variable: il y a l'entier k dans la case i j = i_j_k
@@ -19,33 +19,31 @@ Un seul par carré
 
 */
 
-/*
-1 3 2 4
-4 2 3 1
-3 4 1 2
-2 1 4 3
 
-1 _ 2 _
-4 _ _ _
-_ _ 1 _
-2 _ 4 _
-
-1 _
-
-1 2 3 4
-4 3 2 1
-3 4 1 2
-2 1 4 3
-
-
-*/
-
-char* initialisation_grille() {
+char* initialisation_grille(int** position_initiale) {
     // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
-    char* string = "(0_0_6&0_1_7&0_3_3&0_5_5&0_7_1&0_8_2&1_0_1&1_2_4&1_6_6&1_7_5&2_1_5&2_2_2&2_3_1&3_2_7&3_3_0&3_6_8&4_1_0&4_3_7&4_4_2&5_0_4&5_6_2&5_7_0&6_4_5&6_6_4&6_7_4&7_2_5&7_4_0&7_5_1&7_7_8&8_0_7&8_1_8&8_2_1&8_5_2&8_6_5&8_7_0)\0";
-    return string;
+    char* grille[81];
+    int index_grille = 0;
+    for (int i = 0; i<9; i++){
+        for(int j = 0; j< 9; j++){
+            if(position_initiale[i][j] != 0){
+                char temp[10];
+                int taille = sprintf(temp, "%d_%d_%d", i, j, position_initiale[i][j]-1)+1;
+                grille[index_grille] = malloc(taille*sizeof(char));
+                strcpy(grille[index_grille], temp);
+                index_grille++;
+            }
+        }
+    }
+    char* result = et_liste(grille, index_grille);
+    for(int i = 0; i<index_grille; i++){
+        free(grille[i]);
+    }
+
+    return result;
 }
 
+// génère la formule qui fait que chaque chiffre apparaît une seule fois par ligne
 char* lignes(int largeur, int hauteur) {
     char** contraintes = malloc(hauteur * sizeof(char*));
     for (int i = 0; i < hauteur; i++) {
@@ -76,6 +74,7 @@ char* lignes(int largeur, int hauteur) {
     return res;
 }
 
+// génère la formule qui fait que chaque chiffre apparaît une seule fois par colone
 char* colones(int largeur, int hauteur) {
     char** contraintes = malloc(largeur * sizeof(char*));
     for (int j = 0; j < largeur; j++) {
@@ -106,6 +105,8 @@ char* colones(int largeur, int hauteur) {
     return res;
 }
 
+
+// génère la formule qui fait qu'il ne peut y avoir qu'un chiffre par case
 char* cases(int largeur, int hauteur) {
     char** contraintes = malloc(largeur * hauteur * sizeof(char*));
     for (int i = 0; i < largeur; i++) {
@@ -130,14 +131,16 @@ char* cases(int largeur, int hauteur) {
     return res;
 }
 
+
+// génère la formule qui fait que chaque chiffre n'apparaît qu'une seule fois par carré
 char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     char** contraintes = malloc((largeur / largeur_boite) * (hauteur / hauteur_boite) * sizeof(char*));
-    for (int i = 0; i < hauteur / hauteur_boite; i += 1) {
+    for (int i = 0; i < hauteur / hauteur_boite; i += 1) {  // (i, j) est la coordonnée de la boite 
         for (int j = 0; j < largeur / largeur_boite; j += 1) {
             char** contraintes_boite = malloc(largeur * sizeof(char*));
             for (int k = 0; k < largeur; k++) {
                 char** contraintes_boite_valeur = malloc(largeur_boite * hauteur_boite * sizeof(char*));
-                for (int i1 = 0; i1 < hauteur_boite; i1++) {
+                for (int i1 = 0; i1 < hauteur_boite; i1++) {   // (i1, j1) est la coordonnée de la case dans la boite (i, j)
                     for (int j1 = 0; j1 < largeur_boite; j1++) {
                         contraintes_boite_valeur[i1 * hauteur_boite + j1] = malloc(10 * sizeof(char));
                         sprintf(contraintes_boite_valeur[i1 * hauteur_boite + j1], "%d_%d_%d", i * hauteur_boite + i1, j * largeur_boite + j1, k);
@@ -164,12 +167,12 @@ char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     return res;
 }
 
-int main(int argc, char* argv[]) {
+void generate_solution_sudoku(char* filename, int** position_initiale) {
     int largeur = 9;
     int hauteur = 9;
     int largeur_boite = 3;
     int hauteur_boite = 3;
-    char* string = initialisation_grille();
+    char* string = initialisation_grille(position_initiale);
     char** contraintes = malloc(5 * sizeof(char*));
     contraintes[0] = string;
     contraintes[1] = lignes(largeur, hauteur);
@@ -177,8 +180,8 @@ int main(int argc, char* argv[]) {
     contraintes[3] = cases(largeur, hauteur);
     contraintes[4] = boites(largeur, hauteur, largeur_boite, hauteur_boite);
     char* contraintes_totales = et_liste(contraintes, 5);
-    // printf("%s\n", contraintes[3]);
-    FILE* file = fopen("sudoku.txt", "w+");
+
+    FILE* file = fopen(filename, "w");
     fprintf(file, "%s\n", contraintes_totales);
     fclose(file);
     for (int i = 1; i < 5; i++) {

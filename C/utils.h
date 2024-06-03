@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 char* ajouter_string(char* dest, int* taille, char* string);
@@ -16,5 +17,10 @@ char* ou_liste(char** l, int n);  // le et logique de n formules
 
 char* et(char* f1, char* f2);  // le et logique de deux formules
 char* ou(char* f1, char* f2);  // le ou logique de deux formules
+char* implique(char* expr1, char* expr2);
+char* equivalent(char* expr1, char* expr2);
+char* non_equivalent(char* expr1, char* expr2);
+char* et_2_expr(char* expr1, char* expr2);
+char* not(char* expr);
 
 #endif

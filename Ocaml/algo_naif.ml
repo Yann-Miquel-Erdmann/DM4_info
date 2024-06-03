@@ -14,7 +14,7 @@ let satsolver_naif (f:formule): sat_result =
 
 (* tests sur des petites formules *)
 let test_satsolver_naif () = 
-	assert(satsolver_naif (And (Var "a" ,Var "a")) == Some [("a", true)]);
+	assert((satsolver_naif (And (Var "a" ,Var "a"))) = Some [("a", true)]);
 	assert(satsolver_naif (Top) = Some []);
 	assert(satsolver_naif (Bot) = None);
 ;;

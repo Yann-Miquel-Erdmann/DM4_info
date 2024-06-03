@@ -7,7 +7,6 @@ char* au_moins_une(char** l, int n) {
     for (int i = 0; i < n; i++) {
         taille += (int)strlen(l[i]);
     }
-    printf("%d\n", taille);
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';
@@ -22,11 +21,46 @@ char* au_moins_une(char** l, int n) {
     return string;
 }
 
-char* une_seule(char** l, int n) {
-    int taille = 2 + 2 * n + n - 1 + 2 * n * (n - 1) + 1;  // parenthèse debut et fin; les () ; les | ; les ~ et les & et le \0
-    for (int i = 0; i < n; i++) {
-        // printf("%d\n", i);
-        taille += n * strlen(l[i]);  // pour les variables qui vont apparaît n fois
+char* implique(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, ">");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
+}
+
+char* equivalent(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, "=");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
+}
+
+char* non_equivalent(char* expr1, char* expr2){
+    int taille = (int)strlen(expr1) + (int)strlen(expr2) + 5; // (), le |, le ~ et le \0
+    char* result = malloc(taille*sizeof(char));
+    result[0] = '(';
+    result[1] = '\0';
+    strcat(result, expr1);
+    strcat(result, "!");
+    strcat(result, expr2);
+    strcat(result, ")");
+    return result;
+}
+
+char* une_seule(char** l, int n){
+    int taille = 2 + 2*n + n-1 + 2*n*(n-1) + 1; // parenthese debut et fin; les () ; les | ; les ~ et les & et le \0
+    for (int i = 0; i<n; i++){
+        taille += n*strlen(l[i]); // pour les variables qui vont apparaite n fois
     }
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
@@ -89,12 +123,20 @@ char* au_plus_une(char** l, int n) {
     return string;
 }
 
+char* not(char* expr){
+    int taille = (int)strlen(expr) + 2; // en plus le ~ et le \0
+    char* string = malloc(taille*sizeof(char));
+    string[0] = '~';
+    string[1] = '\0';
+    strcat(string, expr);
+    return string;
+}
+
 char* aucun(char** l, int n) {
     int taille = 2 + n + (n - 1) + 2;  // les () les ~ et les & et le \0
     for (int i = 0; i < n; i++) {
         taille += strlen(l[i]);
     }
-    printf("%d\n", taille);
     char* string = malloc(taille * sizeof(char));
     string[0] = '\0';
 
@@ -149,7 +191,7 @@ char* ou_liste(char** l, int n) {
 
 
 char* et(char* f1, char* f2) {
-    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les & et le \0
+    int taille = 4 + (int)strlen(f1) + (int)strlen(f2);  // les () et les & et le \0
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';
@@ -161,7 +203,7 @@ char* et(char* f1, char* f2) {
 }
 
 char* ou(char* f1, char* f2) {
-    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les | et le \0
+    int taille = 4 + (int)strlen(f1) + (int)strlen(f2);  // les () et les | et le \0
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';
