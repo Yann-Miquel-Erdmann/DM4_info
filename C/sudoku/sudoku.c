@@ -21,27 +21,25 @@ Un seul par carré
 
 
 char* initialisation_grille(int** position_initiale) {
-    char** grille = malloc(81*sizeof(char*));
-
-    // place les chiffres déjà présents dans la grille
+    // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
+    char* grille[81];
+    int index_grille = 0;
     for (int i = 0; i<9; i++){
         for(int j = 0; j< 9; j++){
             if(position_initiale[i][j] != 0){
                 char temp[10];
                 int taille = sprintf(temp, "%d_%d_%d", i, j, position_initiale[i][j]-1)+1;
-                grille[i*9+j] = malloc(taille*sizeof(char));
-                strcpy(grille[9*i+j], temp);
+                grille[index_grille] = malloc(taille*sizeof(char));
+                strcpy(grille[index_grille], temp);
+                index_grille++;
             }
         }
     }
-    
-    // fait la conjonction des contraintes pour cases déjà remplies
-    char* result = et_liste(grille, 81);
-    for(int i = 0; i<81; i++){
+    char* result = et_liste(grille, index_grille);
+    for(int i = 0; i<index_grille; i++){
         free(grille[i]);
     }
-    free(grille);
-    
+
     return result;
 }
 
