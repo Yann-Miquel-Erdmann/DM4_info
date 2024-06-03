@@ -6,7 +6,7 @@ C: $(SOURCES_C)
 	gcc $(SOURCES_C) -o $(EXEC_C) $(C_FLAGS)
 
 clean_C:
-	rm generateur_de_formules
+	rm $(EXEC_C)
 
 EXEC_OCAML = satsolver
 SOURCES_OCAML = base_satsolver.ml valuation.ml satsolver.ml variable_priority.ml algo_quine.ml algo_naif.ml main.ml
@@ -19,7 +19,7 @@ clean_OCAML:
 	rm $(OCAML_DIR)/*.cmi	
 	rm $(OCAML_DIR)/*.cmx	
 	rm $(OCAML_DIR)/*.o	
-	rm satsolver
+	rm $(EXEC_OCAML)
 
 clean: clean_C clean_OCAML
 	echo "cleaned"
