@@ -1,6 +1,7 @@
 open Valuation;;
 open Base_satsolver;;
 
+(* lance tous les tests *)
 let test () =
   assert ((Array.length Sys.argv) > 1);
   assert (1 == 1);
@@ -20,12 +21,14 @@ let read_file (fn: string) : string =
   close_in ic; res
 ;;
 
+(* teste si la liste l ne contient pas de doublons *)
 let rec liste_est_triee_sans_doublon (l:'a list) : bool =
   match l with
   | x::y::q -> if x < y then liste_est_triee_sans_doublon (y::q) else false
   | _ -> true
 ;;
 
+(* rassemble deux listes triéées l1 et l2 en une seule qui est renvoyée *)
 let union (l1:'a list) (l2: 'a list): 'a list =
   let rec union_aux (l1:'a list) (l2: 'a list) (l3:'a list) : 'a list =
     match l1, l2 with
@@ -35,12 +38,14 @@ let union (l1:'a list) (l2: 'a list): 'a list =
   in union_aux l1 l2 []
 ;;
 
+(* teste si l'élément v est dans la liste l*)
 let rec in_list (v: 'a) (l:'a list) : bool =
   match l with
   | [] -> false
   | x::q -> if x = v then true else in_list v q
 ;;
 
+(* renvoie la liste des variables de la formule f *)
 let calculate_var (f:formule) : string list =
   let rec calc_var_aux (f:formule) (l:string list) : string list =
     match f with
