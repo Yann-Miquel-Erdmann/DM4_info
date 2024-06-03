@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "utils.h"
 /*
 régions = {
 0:  Auvergne-Rhône-Alpes,
@@ -42,11 +46,8 @@ pour toute région i:
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "utils.h"
-
+/* génère la liste d'adjacence des différnents sommets du graphe
+   représenté par les régions de la france */
 void initialiser(int** voisins, int* voisin_tailles) {
     voisins[0] = malloc(5 * sizeof(int));
     voisins[0][0] = 1;
@@ -134,7 +135,11 @@ void initialiser(int** voisins, int* voisin_tailles) {
     voisin_tailles[12] = 2;
 }
 
-/*void main() {
+/* génère la solution au probmlème du coliroage de la carte
+   i.e. colorier les différentes régions pour que
+   deux adjacentes ne soient pas de la même couleur */
+void generate_solution_carte(char* filename) {
+    FILE* file = fopen(filename, "w");
     int n = 13;
     int nb_couleurs = 4;
     int** voisins = malloc(n * sizeof(int*));
@@ -143,37 +148,79 @@ void initialiser(int** voisins, int* voisin_tailles) {
 
     char** regions = malloc(n * sizeof(char*));
     for (int i = 0; i < n; i++) {
-        regions[i] = malloc(100 * sizeof(char));
+        // initialisation des différent composants
         char** couleurs = malloc(nb_couleurs * sizeof(char*));
         char** contrainte_couleurs_voisins = malloc((nb_couleurs + 1) * sizeof(char*));
+        
+        // génération des contraintes
         for (int k = 0; k < nb_couleurs; k++) {
-            couleurs[k] = malloc(10 * sizeof(char));
-            sprintf(couleurs[k], "%d_%d", i, k);
-
+            char temp[20];
+            int taille = sprintf(temp, "%d_%d", i, k)+1;
+            couleurs[k] = malloc(taille * sizeof(char));
+            strcpy(couleurs[k], temp);
+            
+            
             char** couleur_voisins = malloc(voisins_taille[i] * sizeof(char*));
+            
+            // contraintes couleurs voisins
             for (int j = 0; j < voisins_taille[i]; j++) {
-                couleur_voisins[j] = malloc(10 * sizeof(char));
-                sprintf(couleur_voisins[j], "%d_%d", voisins[i][j], k);
+                taille = sprintf(temp, "%d_%d", voisins[i][j], k)+1;
+                couleur_voisins[j] = malloc(taille * sizeof(char));
+                strcpy(couleur_voisins[j], temp);
+                
             }
-
+            
             char** contrainte_et = malloc(2 * sizeof(char*));
             if (voisins_taille[i] > 0) {
                 contrainte_et[0] = aucun(couleur_voisins, voisins_taille[i]);
             } else {
-                contrainte_et[0] = "T";
+                contrainte_et[0] = malloc(2*sizeof(char));
+                strcpy(contrainte_et[0], "T");
             }
-
-            contrainte_et[1] = couleurs[k];
+            
+            for(int j = 0; j<voisins_taille[i]; j++){
+                    free(couleur_voisins[j]);
+            }
+            free(couleur_voisins);
+            
+            contrainte_et[1] = malloc((strlen(couleurs[k])+1)*sizeof(char));
+            strcpy(contrainte_et[1], couleurs[k]);
 
             contrainte_couleurs_voisins[k] = et_liste(contrainte_et, 2);
+            for(int i = 0; i<2; i++){
+                free(contrainte_et[i]);
+            }
+            free(contrainte_et);
+            
         }
+        
         char** contraintes_region = malloc(2 * sizeof(char*));
         contraintes_region[0] = une_seule(couleurs, nb_couleurs);
         contraintes_region[1] = ou_liste(contrainte_couleurs_voisins, nb_couleurs);
+        for (int j = 0; j<nb_couleurs; j++){
+            free(couleurs[j]);
+            free(contrainte_couleurs_voisins[j]);
+        }
+        free(couleurs);
+        free(contrainte_couleurs_voisins);
 
         regions[i] = et_liste(contraintes_region, 2);
+        free(contraintes_region[0]);
+        free(contraintes_region[1]);
+        free(contraintes_region);
     }
+    for (int i = 0; i< n; i++){
+        free(voisins[i]);
+    }
+    free(voisins);
+    free(voisins_taille);
     char* contraintes = et_liste(regions, n);
-    printf("%s\n", contraintes);
+    for (int i = 0; i<n; i++){
+        free(regions[i]);
+    }
+    free(regions);
+    fprintf(file, "%s", contraintes);
+    free(contraintes);
+    fclose(file);
 }
-*/
+

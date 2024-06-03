@@ -40,10 +40,27 @@ _ _ 1 _
 
 */
 
-char* initialisation_grille(void) {
+char* initialisation_grille(int** position_initiale) {
     // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
-    char* string = "(0_0_6&0_1_7&0_3_3&0_5_5&0_7_1&0_8_2&1_0_1&1_2_4&1_6_6&1_7_5&2_1_5&2_2_2&2_3_1&3_2_7&3_3_0&3_6_8&4_1_0&4_3_7&4_4_2&5_0_4&5_6_2&5_7_0&6_4_5&6_6_4&6_7_4&7_2_5&7_4_0&7_5_1&7_7_8&8_0_7&8_1_8&8_2_1&8_5_2&8_6_5&8_7_0)\0";
-    return string;
+    char** grille = malloc(81*sizeof(char*));
+    
+    for (int i = 0; i<9; i++){
+        for(int j = 0; j< 9; j++){
+            if(position_initiale[i][j] != 0){
+                char temp[10];
+                int taille = sprintf(temp, "%d_%d_%d", i, j, position_initiale[i][j]-1)+1;
+                grille[i*9+j] = malloc(taille*sizeof(char));
+                strcpy(grille[9*i+j], temp);
+            }
+        }
+    }
+    char* result = et_liste(grille, 81);
+    for(int i = 0; i<81; i++){
+        free(grille[i]);
+    }
+    free(grille);
+    
+    return result;
 }
 
 char* lignes(int largeur, int hauteur) {
@@ -164,12 +181,12 @@ char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     return res;
 }
 
-int main(int argc, char* argv[]) {
+void generate_solution_sudoku(char* filename, int** position_initiale) {
     int largeur = 9;
     int hauteur = 9;
     int largeur_boite = 3;
     int hauteur_boite = 3;
-    char* string = initialisation_grille();
+    char* string = initialisation_grille(position_initiale);
     char** contraintes = malloc(5 * sizeof(char*));
     contraintes[0] = string;
     contraintes[1] = lignes(largeur, hauteur);
@@ -177,8 +194,8 @@ int main(int argc, char* argv[]) {
     contraintes[3] = cases(largeur, hauteur);
     contraintes[4] = boites(largeur, hauteur, largeur_boite, hauteur_boite);
     char* contraintes_totales = et_liste(contraintes, 5);
-    // printf("%s\n", contraintes[3]);
-    FILE* file = fopen("sudoku.txt", "w+");
+
+    FILE* file = fopen(filename, "w");
     fprintf(file, "%s\n", contraintes_totales);
     fclose(file);
     for (int i = 1; i < 5; i++) {
@@ -187,4 +204,3 @@ int main(int argc, char* argv[]) {
     free(contraintes);
     free(contraintes_totales);
 }
-*/

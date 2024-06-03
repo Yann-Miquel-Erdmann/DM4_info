@@ -2,31 +2,90 @@
 #include "utils.h"
 #include "dames/n_dames.h"
 #include "taquin/taquin.h"
+#include "coloriage_carte.h"
 #include "5_maisons/5_maisons.h"
+#include "le_menteur.h"
+#include "sudoku.h"
 
 int main(void){
-    /*FILE* file = fopen("test_5_maisons.txt", "w");
-    char* test = generate_solution_5_maisons();
-    printf("%s\n", test);
-    fprintf(file, "%s", test);
-    fclose(file);
-    free(test);
+    int probleme = 0;
+    char filename[100];
+    printf("===== Générateur de problèmes pour le Satsolver =====\n\n");
     
-    return 0;*/
-    /*gen_formule_n_dames(5, "5dames.txt");*/
-    
-    FILE* file = fopen("test_taquin_3x3.txt", "w");
-    int initial_position[9] = {1, 2, 3, 4, 6, 9, 7, 5, 8};
-    char* test = generate_solution(3, initial_position, 9);
-    if (!strcmp(test, "")){
-        exit(1);
+    while (probleme > 5 || probleme < 1){
+        printf("Choisis un problème à résoudre parmis les suivants:\n");
+        printf("  1) Le menteur\n");
+        printf("  2) Le coloriage de la carte de france\n");
+        printf("  3) Le problème des 5 maisons\n");
+        printf("  4) Le sudoku (grille requise)\n");
+        printf("  5) Le taquin (configuration initiale requise) (pas résolvable)\n\n");
+        
+        printf("Choisis le numéro du problème: ");
+        scanf("%d", &probleme);
     }
-    printf("%s\n", test);
-    fprintf(file, "%s", test);
-    fclose(file);
-    free(test);
     
-    /*char* test = generate_move(3, 0);
-    printf("%s\n", test);
-    free(test);*/
+    printf("Choisis le fichier de sortie: ");
+    scanf("%s", filename);
+    
+    char c = '\0';
+    
+    FILE* file = fopen(filename, "r");
+    
+    if (file != NULL){
+        
+        printf("Le fichier existe déjà, voulez vous l'écraser? (y/n) ");
+        scanf("%c", &c);
+        switch (c) {
+            case 'y':
+            case 'Y':
+                printf("La fichier va être remplacé.\n");
+                break;
+            default:
+                fclose(file);
+                printf("Sortie du programme.\n");
+                return 0;
+                break;
+        }
+    }
+    fclose(file);
+    switch (probleme) {
+        case 1:
+            printf("Génération du problème du menteur en cours...\n");
+            generate_solution_menteur(filename);
+            break;
+        case 2:
+            printf("Génération du problème de la carte de france en cours...\n");
+            generate_solution_carte(filename);
+            break;
+        case 3:
+            printf("Génération du problème des cinq maisons en cours...\n");
+            generate_solution_5_maisons(filename);
+            break;
+        case 4:
+            printf("Grille 9x9\n");
+            printf("Entrez les cases du sudoku (numéros 1-9 et 0 pour vide) séparées par des espaces:\n");
+            int** position_départ = malloc(9*sizeof(int*));
+            for (int i = 0; i<9; i++){
+                position_départ[i] = malloc(9*sizeof(int));
+                printf("Entrez la ligne %d: ", i+1);
+                for (int j = 0; j<9; j++){
+                    scanf("%d", &position_départ[i][j]);
+                }
+            }
+            printf("Génération du problème du sudoku en cours...\n");
+            generate_solution_sudoku(filename, position_départ);
+            for(int i = 0; i<9; i++){
+                free(position_départ[i]);
+            }
+            free(position_départ);
+            break;
+        case 5:
+            printf("Génération du problème du menteur en cours...\n");
+            generate_solution_menteur(filename);
+            break;
+            
+        default:
+            break;
+    }
+     
 }

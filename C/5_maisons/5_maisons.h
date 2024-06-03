@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include "../utils.h"
 
-char* contrainte1(void);
-char* generate_solution_5_maisons(void);
-char* contrainte10(void);
+/* génère la solution au problème des 5 maisons
+   la chaine de caractères renvoyée doit être free */
+void generate_solution_5_maisons(char* filename);
 
 #endif

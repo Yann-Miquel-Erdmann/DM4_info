@@ -7,7 +7,6 @@ char* au_moins_une(char** l, int n) {
     for (int i = 0; i < n; i++) {
         taille += (int)strlen(l[i]);
     }
-    printf("%d\n", taille);
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';
@@ -138,7 +137,6 @@ char* aucun(char** l, int n) {
     for (int i = 0; i < n; i++) {
         taille += strlen(l[i]);
     }
-    printf("%d\n", taille);
     char* string = malloc(taille * sizeof(char));
     string[0] = '\0';
 
@@ -193,7 +191,7 @@ char* ou_liste(char** l, int n) {
 
 
 char* et(char* f1, char* f2) {
-    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les & et le \0
+    int taille = 4 + (int)strlen(f1) + (int)strlen(f2);  // les () et les & et le \0
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';
@@ -205,7 +203,7 @@ char* et(char* f1, char* f2) {
 }
 
 char* ou(char* f1, char* f2) {
-    int taille = 4 + strlen(f1) + strlen(f2);  // les () et les | et le \0
+    int taille = 4 + (int)strlen(f1) + (int)strlen(f2);  // les () et les | et le \0
     char* string = malloc(taille * sizeof(char));
     string[0] = '(';
     string[1] = '\0';

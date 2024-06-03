@@ -22,7 +22,5 @@ char* equivalent(char* expr1, char* expr2);
 char* non_equivalent(char* expr1, char* expr2);
 char* et_2_expr(char* expr1, char* expr2);
 char* not(char* expr);
-char* et(char** l, int n);  // le et logique de n formules
-char* ou(char** l, int n);  // le et logique de n formules
 
 #endif

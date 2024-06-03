@@ -28,7 +28,7 @@ char* variable_taquin(int index_move, int valeur_tuile, int case_n, bool normal)
 char* variable_bloc_colone(int taille_grille, int index_move, int index_colone){
     char* vars[3] = {variable_taquin(index_move, index_colone, index_colone, true), variable_taquin(index_move, taille_grille+index_colone, taille_grille+index_colone, true), variable_taquin(index_move, 2*taille_grille+index_colone, 2*taille_grille+index_colone, true)};
     
-    char* result = et(vars, 3);
+    char* result = et_liste(vars, 3);
     for (int i = 0; i<3; i++){
         free(vars[i]);
     }
@@ -38,7 +38,7 @@ char* variable_bloc_colone(int taille_grille, int index_move, int index_colone){
 char* variable_bloc_ligne(int taille_grille, int index_move, int index_ligne){
     char* vars[3] = {variable_taquin(index_move, (index_ligne-1)*taille_grille+1, (index_ligne-1)*taille_grille+1, true), variable_taquin(index_move, (index_ligne-1)*taille_grille+2, (index_ligne-1)*taille_grille+2, true), variable_taquin(index_move, (index_ligne-1)*taille_grille+3, (index_ligne-1)*taille_grille+3, true)};
     
-    char* result = et(vars, 3);
+    char* result = et_liste(vars, 3);
     for (int i = 0; i<3; i++){
         free(vars[i]);
     }
@@ -72,7 +72,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         }
         vars[0] = variable_taquin(index_move, total_tiles, case_n+1, true);
         
-        char* e1 = et(vars, total_tiles);
+        char* e1 = et_liste(vars, total_tiles);
         
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
@@ -83,7 +83,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         if (index_move == 0){
             condition1 = e1;
         }else{
-            condition1 = et_2_expr(e2, e1);
+            condition1 = et(e2, e1);
             free(e1);
         }
         free(e2);
@@ -96,7 +96,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
                 vars[i-1] = variable_taquin(index_move+1, valeur_tuile, i, false);
             }
         }
-        char* instruction1 = et(vars, total_tiles);
+        char* instruction1 = et_liste(vars, total_tiles);
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
         }
@@ -125,7 +125,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         }
         vars[0] = variable_taquin(index_move, total_tiles, case_n-1, true);
         
-        char* e1 = et(vars, total_tiles);
+        char* e1 = et_liste(vars, total_tiles);
         
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
@@ -135,7 +135,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         if (index_move == 0){
             condition1 = e1;
         }else{
-            condition1 = et_2_expr(e2, e1);
+            condition1 = et(e2, e1);
             free(e1);
         }
         free(e2);
@@ -148,7 +148,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
                 vars[i-1] = variable_taquin(index_move+1, valeur_tuile, i, false);
             }
         }
-        char* instruction1 = et(vars, total_tiles);
+        char* instruction1 = et_liste(vars, total_tiles);
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
         }
@@ -177,7 +177,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         }
         vars[0] = variable_taquin(index_move, total_tiles, case_n+taille_grille, true);
         
-        char* e1 = et(vars, total_tiles);
+        char* e1 = et_liste(vars, total_tiles);
         
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
@@ -187,7 +187,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         if (index_move == 0){
             condition1 = e1;
         }else{
-            condition1 = et_2_expr(e2, e1);
+            condition1 = et(e2, e1);
             free(e1);
         }
         free(e2);
@@ -200,7 +200,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
                 vars[i-1] = variable_taquin(index_move+1, valeur_tuile, i, false);
             }
         }
-        char* instruction1 = et(vars, total_tiles);
+        char* instruction1 = et_liste(vars, total_tiles);
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
         }
@@ -229,7 +229,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         }
         vars[0] = variable_taquin(index_move, total_tiles, case_n-taille_grille, true);
         
-        char* e1 = et(vars, total_tiles);
+        char* e1 = et_liste(vars, total_tiles);
         
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
@@ -240,7 +240,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         if (index_move == 0){
             condition1 = e1;
         }else{
-            condition1 = et_2_expr(e2, e1);
+            condition1 = et(e2, e1);
             free(e1);
         }
         free(e2);
@@ -253,7 +253,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
                 vars[i-1] = variable_taquin(index_move+1, valeur_tuile, i, false);
             }
         }
-        char* instruction1 = et(vars, total_tiles);
+        char* instruction1 = et_liste(vars, total_tiles);
         for (int i = 0; i<total_tiles; i++){
             free(vars[i]);
         }
@@ -266,7 +266,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         free(instruction2);
     }
     
-    char* condition1 = ou(move, 4-enleve_move);
+    char* condition1 = ou_liste(move, 4-enleve_move);
     char* condition2 = not(condition1);
     
     char* vars[total_tiles+2];
@@ -278,7 +278,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
 
         }
     }
-    char* instruction1 = et(vars, total_tiles);
+    char* instruction1 = et_liste(vars, total_tiles);
     
     for (int i = 1; i<=total_tiles; i++){
         if (i == case_n){
@@ -288,7 +288,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
         }
     }
     
-    char* instruction2 = et(vars, 9);
+    char* instruction2 = et_liste(vars, 9);
     
     mouvements[8-enleve] = implique(condition1, instruction1);
     mouvements[9-enleve] = implique(condition2, instruction2);
@@ -301,7 +301,7 @@ char* generate_move_tile(int taille_grille, int index_move, int case_n, int vale
     free(condition1);
     free(condition2);
 
-    char* pre_res = et(mouvements, 10-enleve);
+    char* pre_res = et_liste(mouvements, 10-enleve);
     
     for (int i = 0; i<10-enleve; i++){
         free(mouvements[i]);
@@ -326,7 +326,7 @@ char* generate_blocage_colone(int taille_grille, int index_move, int index_colon
         premiere = 0;
         vars[taille_grille*taille_grille*taille_grille] = variable_bloc_colone(taille_grille, index_move+1, index_colone-1);
     }
-    char* condition1 = et(vars, taille_grille*taille_grille*taille_grille-premiere);
+    char* condition1 = et_liste(vars, taille_grille*taille_grille*taille_grille-premiere);
     for (int i = 0; i< taille_grille*taille_grille*taille_grille-premiere; i++){
         free(vars[i]);
     }
@@ -337,7 +337,7 @@ char* generate_blocage_colone(int taille_grille, int index_move, int index_colon
     char* pre_res1 = implique(condition1, instruction1);
     char* pre_res2 = implique(condition2, instruction2);
     
-    char* result = et_2_expr(pre_res1, pre_res2);
+    char* result = et(pre_res1, pre_res2);
     free(condition1);
     free(instruction1);
     free(condition2);
@@ -355,7 +355,7 @@ char* generate_blocage_ligne(int taille_grille, int index_move, int index_ligne)
             vars[(i-1)*taille_grille*taille_grille+j-1] = variable_taquin(index_move, j, (index_ligne-1)*taille_grille+i, (index_ligne-1)*taille_grille+i == j);
         }
     }
-    char* condition1 = et(vars, taille_grille*taille_grille*taille_grille);
+    char* condition1 = et_liste(vars, taille_grille*taille_grille*taille_grille);
     for (int i = 0; i< taille_grille*taille_grille*taille_grille; i++){
         free(vars[i]);
     }
@@ -365,7 +365,7 @@ char* generate_blocage_ligne(int taille_grille, int index_move, int index_ligne)
             vars[(i-1)*taille_grille*taille_grille+j-1] = variable_taquin(index_move+1, j, (index_ligne-1)*taille_grille+i, (index_ligne-1)*taille_grille+i == j);
         }
     }
-    char* instruction1 = et(vars, taille_grille*taille_grille*taille_grille);
+    char* instruction1 = et_liste(vars, taille_grille*taille_grille*taille_grille);
     for (int i = 0; i< taille_grille*taille_grille*taille_grille; i++){
         free(vars[i]);
     }
@@ -382,7 +382,7 @@ char* bloc_all_colones(int taille_grille, int index_move){
     for (int i = 0; i<taille_grille-1; i++){
         vars[i] = generate_blocage_colone(taille_grille, index_move, i+1);
     }
-    char* result = et(vars, taille_grille-1);
+    char* result = et_liste(vars, taille_grille-1);
     for (int i = 0; i<taille_grille-1; i++){
         free(vars[i]);
     }
@@ -394,7 +394,7 @@ char* bloc_all_lignes(int taille_grille, int index_move){
     for (int i = 0; i<taille_grille-1; i++){
         vars[i] = generate_blocage_ligne(taille_grille, index_move, i+1);
     }
-    char* result = et(vars, taille_grille-1);
+    char* result = et_liste(vars, taille_grille-1);
     for (int i = 0; i<taille_grille-1; i++){
         free(vars[i]);
     }
@@ -422,8 +422,8 @@ char* generate_move(int taille_grille, int index_move){
             l[(case_n-1)*(taille_grille*taille_grille-1)+valeur_tuile-1] = generate_move_tile(taille_grille, index_move, case_n, valeur_tuile);
         }
     }
-
-    char* instruction2 = et(l, taille);
+    
+    char* instruction2 = et_liste(l, taille);
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
@@ -434,7 +434,7 @@ char* generate_move(int taille_grille, int index_move){
             vars[(i-1)*total_tiles+j-1] = variable_taquin(index_move, i, j, i==j);
         }
     }
-    char* condition1 = et(vars, total_tiles*total_tiles);
+    char* condition1 = et_liste(vars, total_tiles*total_tiles);
     
     for (int i = 0; i<total_tiles*total_tiles; i++){
         free(vars[i]);
@@ -445,17 +445,18 @@ char* generate_move(int taille_grille, int index_move){
             vars[(i-1)*total_tiles+j-1] = variable_taquin(index_move+1, i, j, i==j);
         }
     }
-    char* instruction1 = et(vars, total_tiles*total_tiles);
+    char* instruction1 = et_liste(vars, total_tiles*total_tiles);
     for (int i = 0; i<total_tiles*total_tiles; i++){
         free(vars[i]);
     }
 
     char* condition2 = not(condition1);
-    char* l2[4] = {bloc_all_lignes(taille_grille, index_move), bloc_all_colones(taille_grille, index_move), implique(condition1, instruction1), implique(condition2, instruction2)};
+    //char* l2[4] = {bloc_all_lignes(taille_grille, index_move), bloc_all_colones(taille_grille, index_move), implique(condition1, instruction1), implique(condition2, instruction2)};
+    char* l2[4] = {"T", "T", implique(condition1, instruction1), implique(condition2, instruction2)};
+
+    char* result = et_liste(l2, 4);
     
-    char* result = et(l2, 4);
-    
-    for (int i = 0; i<4; i++){
+    for (int i = 2; i<4; i++){
         free(l2[i]);
     }
     
@@ -481,7 +482,7 @@ char* generate_constraint_pos(int taille_grille, int* position, int var_len, int
         }
     }
     
-    char* result = et(l, taille);
+    char* result = et_liste(l, taille);
     for (int i = 0; i< taille; i++){
         free(l[i]);
     }
@@ -531,7 +532,7 @@ char* generate_solution(int taille_grille, int* initial_position, int var_len){
     for (int i = 0; i < var_len2; i++){
         variables[i] = generate_move(taille_grille, i);
     }
-    l[1] = et(variables, var_len2);
+    l[1] = et_liste(variables, var_len2);
     for (int i = 0; i < var_len2; i++){
         free(variables[i]);
     }
@@ -540,7 +541,7 @@ char* generate_solution(int taille_grille, int* initial_position, int var_len){
     int final_pos[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     l[2] = generate_constraint_pos(taille_grille, final_pos, var_len, var_len2);
     
-    char* result = et(l, 3);
+    char* result = et_liste(l, 3);
     
     for (int i = 0; i< 3; i++){
         free(l[i]);

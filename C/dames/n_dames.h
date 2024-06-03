@@ -3,10 +3,8 @@
 
 #include <stdio.h>
 
-char* variable(int i, int j);
-char* contrainte_toutes_lignes(int n);
-char* contrainte_toutes_colones(int n);
-char* contrainte_toutes_diagonales(int n);
+/* renvoie la formule pour la problème des n dames su un plateau de n*n cases
+   stocke le résultat dans le fichier filename */
 void gen_formule_n_dames(int n, char* filename);
 
 #endif

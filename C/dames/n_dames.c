@@ -1,9 +1,11 @@
 #include "n_dames.h"
-#include "utils.h"
+#include "../utils.h"
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 
+/* renvoie la variable de position (i, j) d'une dame sur le plateau
+   la chaine de caractère renvoyée doit être free */
 char* variable(int i, int j){
     char buffer[50];
     int taille = sprintf(buffer, "X_%d_%d", i, j)+1;
@@ -12,6 +14,9 @@ char* variable(int i, int j){
     return string;
 }
 
+/* renvoie la contrainte sur la ligne i d'un plateau de n*n cases
+   i.e. il ne doit y a voir qu'une seule dame sur la ligne
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_une_ligne(int i, int n){
     char** l = malloc(n*sizeof(char*));
     for (int k = 0; k<n; k++){
@@ -25,33 +30,25 @@ char* contrainte_une_ligne(int i, int n){
     return result;
 }
 
+/* renvoie la contrainte sur toutes les lignes d'un plateau de n*n cases
+   i.e. chaque ligne doit contenir une seule et unique dame
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_toutes_lignes (int n){
     char** l = malloc(n*sizeof(char*));
-    int taille = 0;
     for (int i = 0; i<n; i++){
         l[i] = contrainte_une_ligne(i, n);
-        taille += strlen(l[i])+1; // ajout operateurs + parenthese de fin
     }
-    taille += 2; // taille + 2 pour la parenthese de debut et le caractère nul
-    char* result = malloc(taille*sizeof(char));
-    result[0] = '(';
-    result[1] = '\0';
-    
-    // concaténation des différents composants et free
+    char* result = et_liste(l, n);
     for (int i = 0; i<n; i++){
-        strcat(result, l[i]);
-        if (i+1 != n){
-            strcat(result, "&");
-        }
         free(l[i]);
     }
     free(l);
-    
-    result[taille-2] = ')';
-    result[taille-1] = '\0';
     return result;
 }
 
+/* renvoie la contrainte sur la colonne i d'un plateau de n*n cases
+   i.e. il ne doit y a voir qu'une seule dame sur la colonne
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_une_colone(int i, int n){
     char** l = malloc(n*sizeof(char*));
     for (int k = 0; k<n; k++){
@@ -65,33 +62,25 @@ char* contrainte_une_colone(int i, int n){
     return result;
 }
 
+/* renvoie la contrainte sur toutes le colonnes d'un plateau de n*n cases
+   i.e. chaque colonne doit contenir une seule et unique dame
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_toutes_colones (int n){
     char** l = malloc(n*sizeof(char*));
-    int taille = 0;
     for (int i = 0; i<n; i++){
         l[i] = contrainte_une_colone(i, n);
-        taille += strlen(l[i])+1; // ajout operateurs + parenthese de fin
     }
-    taille += 2; // taille + 2 pour la parenthese de debut et le caractère nul
-    char* result = malloc(taille*sizeof(char));
-    result[0] = '(';
-    result[1] = '\0';
-    
-    // concaténation des différents composants et free
+    char* result = et_liste(l, n);
     for (int i = 0; i<n; i++){
-        strcat(result, l[i]);
-        if (i+1 != n){
-            strcat(result, "&");
-        }
         free(l[i]);
     }
     free(l);
-    
-    result[taille-2] = ')';
-    result[taille-1] = '\0';
     return result;
 }
 
+/* renvoie la contrainte sur la diagonale partant de la case (i,j) vers la gauche d'un plateau de n*n cases
+   i.e. il doit y avoir au plus une dame sur la diagonale
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_une_diagonale_gauche(int i, int j, int n){
     int taille = n-i;
     if (i == 0){
@@ -109,6 +98,9 @@ char* contrainte_une_diagonale_gauche(int i, int j, int n){
     return result;
 }
 
+/* renvoie la contrainte sur la diagonale partant de la case (i,j) vers la droite d'un plateau de n*n cases
+   i.e. il doit y avoir au plus une dame sur la diagonale
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_une_diagonale_droite(int i, int j, int n){
     int taille = n-i;
     if (j > i){
@@ -126,6 +118,9 @@ char* contrainte_une_diagonale_droite(int i, int j, int n){
     return result;
 }
 
+/* renvoie la contrainte sur toutes les diagonales d'un plateau de n*n cases
+   i.e. il doit y avoir au plus une dame sur la diagonale
+   la chaine de caractère renvoyée doit être free */
 char* contrainte_toutes_diagonales (int n){
     char** l = malloc((2*(2*n-3))*sizeof(char*));  // n-1 cases + n-2 cases -> 2n-3 cases pour chaque coté
     printf("%d\n", 2*(2*n-3));
