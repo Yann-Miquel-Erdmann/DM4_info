@@ -495,7 +495,7 @@ char* generate_solution(int taille_grille, int* initial_position, int var_len){
     // vérifie si le solve se fair pour un taquin de 3 ou 4 cases de coté
     int var_len2;
     if (taille_grille == 3){
-        var_len2 = 5;
+        var_len2 = 40;
     }else if (taille_grille == 4){
         var_len2 = 80;
     }else{

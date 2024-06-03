@@ -28,7 +28,9 @@ int main(void){
     scanf("%s", filename);
     
     char c = '\0';
-    
+    while (c != '\n'){
+        scanf("%c", &c);
+    }
     FILE* file = fopen(filename, "r");
     
     if (file != NULL){
@@ -47,7 +49,7 @@ int main(void){
                 break;
         }
     }
-    fclose(file);
+
     switch (probleme) {
         case 1:
             printf("Génération du problème du menteur en cours...\n");
@@ -64,24 +66,31 @@ int main(void){
         case 4:
             printf("Grille 9x9\n");
             printf("Entrez les cases du sudoku (numéros 1-9 et 0 pour vide) séparées par des espaces:\n");
-            int** position_départ = malloc(9*sizeof(int*));
+            int** position_départ_sudoku = malloc(9*sizeof(int*));
             for (int i = 0; i<9; i++){
-                position_départ[i] = malloc(9*sizeof(int));
+                position_départ_sudoku[i] = malloc(9*sizeof(int));
                 printf("Entrez la ligne %d: ", i+1);
                 for (int j = 0; j<9; j++){
-                    scanf("%d", &position_départ[i][j]);
+                    scanf("%d", &position_départ_sudoku[i][j]);
                 }
             }
             printf("Génération du problème du sudoku en cours...\n");
-            generate_solution_sudoku(filename, position_départ);
+            generate_solution_sudoku(filename, position_départ_sudoku);
             for(int i = 0; i<9; i++){
-                free(position_départ[i]);
+                free(position_départ_sudoku[i]);
             }
-            free(position_départ);
+            free(position_départ_sudoku);
             break;
         case 5:
-            printf("Génération du problème du menteur en cours...\n");
-            generate_solution_menteur(filename);
+            printf("Plateau 3x3\n");
+            printf("Entrez la position de départ (la case vide est le 9): ");
+            int* position_départ_taquin = malloc(9*sizeof(int));
+            for (int i = 0; i<9; i++){
+                scanf("%d", &position_départ_taquin[i]);
+            }
+            printf("Génération du problème du taquin en cours...\n");
+            generate_solution(3, position_départ_taquin, 9);
+            free(position_départ_taquin);
             break;
             
         default:
