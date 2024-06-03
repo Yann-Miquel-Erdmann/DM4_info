@@ -92,7 +92,7 @@ let quine (f:formule) : sat_result =
     progress_bar();
     count := !count + 1;
     match l with
-    | [] -> if simpl_full f = Top then begin total := 1.; progress_bar(); print_newline(); Some v end else None
+    | [] -> if simpl_full f = Top then begin total := 1.; progress_bar(); Some v end else None
     | x::q -> 
       match simpl_full f with
       | Top -> total := 1.; progress_bar(); print_newline(); Some v

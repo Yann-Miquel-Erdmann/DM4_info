@@ -36,7 +36,9 @@ let main () =
       print_string "done\n"; print_newline ();
       print_string "testing valuations..."; print_newline();
       let time0 = Sys.time() in
-      print_valuation (quine formule);
+      let v = quine formule in 
+      print_newline();
+      print_valuation v;
       let end0 = Sys.time() in
       print_newline ();
       print_string "Solution found in "; print_float (end0-.time0); print_string " seconds"; print_newline();
