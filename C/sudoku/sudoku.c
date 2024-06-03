@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "../utils.h"
 
 /*
 Variable: il y a l'entier k dans la case i j = i_j_k
@@ -19,31 +19,11 @@ Un seul par carré
 
 */
 
-/*
-1 3 2 4
-4 2 3 1
-3 4 1 2
-2 1 4 3
-
-1 _ 2 _
-4 _ _ _
-_ _ 1 _
-2 _ 4 _
-
-1 _
-
-1 2 3 4
-4 3 2 1
-3 4 1 2
-2 1 4 3
-
-
-*/
 
 char* initialisation_grille(int** position_initiale) {
-    // char* string = "(0_0_0&0_1_1&0_2_2&0_3_3&1_0_3&1_1_2&1_2_1&1_3_0&2_0_2&2_1_3&2_2_0&2_3_1)\0";
     char** grille = malloc(81*sizeof(char*));
-    
+
+    // place les chiffres déjà présents dans la grille
     for (int i = 0; i<9; i++){
         for(int j = 0; j< 9; j++){
             if(position_initiale[i][j] != 0){
@@ -54,6 +34,8 @@ char* initialisation_grille(int** position_initiale) {
             }
         }
     }
+    
+    // fait la conjonction des contraintes pour cases déjà remplies
     char* result = et_liste(grille, 81);
     for(int i = 0; i<81; i++){
         free(grille[i]);
@@ -63,6 +45,7 @@ char* initialisation_grille(int** position_initiale) {
     return result;
 }
 
+// génère la formule qui fait que chaque chiffre apparaît une seule fois par ligne
 char* lignes(int largeur, int hauteur) {
     char** contraintes = malloc(hauteur * sizeof(char*));
     for (int i = 0; i < hauteur; i++) {
@@ -93,6 +76,7 @@ char* lignes(int largeur, int hauteur) {
     return res;
 }
 
+// génère la formule qui fait que chaque chiffre apparaît une seule fois par colone
 char* colones(int largeur, int hauteur) {
     char** contraintes = malloc(largeur * sizeof(char*));
     for (int j = 0; j < largeur; j++) {
@@ -123,6 +107,8 @@ char* colones(int largeur, int hauteur) {
     return res;
 }
 
+
+// génère la formule qui fait qu'il ne peut y avoir qu'un chiffre par case
 char* cases(int largeur, int hauteur) {
     char** contraintes = malloc(largeur * hauteur * sizeof(char*));
     for (int i = 0; i < largeur; i++) {
@@ -147,14 +133,16 @@ char* cases(int largeur, int hauteur) {
     return res;
 }
 
+
+// génère la formule qui fait que chaque chiffre n'apparaît qu'une seule fois par carré
 char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     char** contraintes = malloc((largeur / largeur_boite) * (hauteur / hauteur_boite) * sizeof(char*));
-    for (int i = 0; i < hauteur / hauteur_boite; i += 1) {
+    for (int i = 0; i < hauteur / hauteur_boite; i += 1) {  // (i, j) est la coordonnée de la boite 
         for (int j = 0; j < largeur / largeur_boite; j += 1) {
             char** contraintes_boite = malloc(largeur * sizeof(char*));
             for (int k = 0; k < largeur; k++) {
                 char** contraintes_boite_valeur = malloc(largeur_boite * hauteur_boite * sizeof(char*));
-                for (int i1 = 0; i1 < hauteur_boite; i1++) {
+                for (int i1 = 0; i1 < hauteur_boite; i1++) {   // (i1, j1) est la coordonnée de la case dans la boite (i, j)
                     for (int j1 = 0; j1 < largeur_boite; j1++) {
                         contraintes_boite_valeur[i1 * hauteur_boite + j1] = malloc(10 * sizeof(char));
                         sprintf(contraintes_boite_valeur[i1 * hauteur_boite + j1], "%d_%d_%d", i * hauteur_boite + i1, j * largeur_boite + j1, k);

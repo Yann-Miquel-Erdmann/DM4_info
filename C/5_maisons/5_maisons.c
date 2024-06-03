@@ -40,7 +40,7 @@
 
 /* renvoie la variable du satsolver qui a pour catégorie l'entier type compris entre 0 et 4
    comme valeur l'entier valeur compris entre 0 et 4 et qui se trouve dans la colonne colone comprise entre 0 et 4
-   la chaine de caractère renvoyée doit être free */
+   la chaîne de caractère renvoyée doit être free */
 
 char* variables_maisons(int type, int valeur, int colonne){
     char buffer[50];
@@ -84,8 +84,8 @@ char* variables_maisons(int type, int valeur, int colonne){
 }
 
 /* renvoie la contrainte 1 du problème des 5 maisons
- i.e. L'anglais abite dans la maison rouge
- la chaine de caractère renvoyée doit être free */
+ i.e. L'anglais abate dans la maison rouge
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte1(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -108,8 +108,8 @@ char* contrainte1(void){
 }
 
 /* renvoie la contrainte 2 du problème des 5 maisons
- i.e. Le suédois possiède un chien comme animal de companie
- la chaine de caractère renvoyée doit être free */
+ i.e. Le suédois possède un chien comme animal de compagnie
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte2(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -133,7 +133,7 @@ char* contrainte2(void){
 
 /* renvoie la contrainte 3 du problème des 5 maisons
  i.e. Le danois boit du thé
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte3(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -157,7 +157,7 @@ char* contrainte3(void){
 
 /* renvoie la contrainte 4 du problème des 5 maisons
  i.e. La maison verte est à gauche de la maison blanche
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte4(void){
     int taille = 4;
     char** l = malloc(taille*sizeof(char*));
@@ -181,7 +181,7 @@ char* contrainte4(void){
 
 /* renvoie la contrainte 5 du problème des 5 maisons
  i.e. La personne qui habite dans la maison verte boit du café
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte5(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -205,7 +205,7 @@ char* contrainte5(void){
 
 /* renvoie la contrainte 6 du problème des 5 maisons
  i.e. Le personne qui fait du vélo possède un oiseau
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte6(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -229,7 +229,7 @@ char* contrainte6(void){
 
 /* renvoie la contrainte 7 du problème des 5 maisons
  i.e. La personne qui habite dans la maison jaune fait de la danse
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte7(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -253,21 +253,21 @@ char* contrainte7(void){
 
 /* renvoie la contrainte 8 du problème des 5 maisons
  i.e. La personne dans la maison du centre boit du lait
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte8(void){
     return variables_maisons(2, 1, 2); // lait
 }
 
 /* renvoie la contrainte 9 du problème des 5 maisons
- i.e. Le norvégien habite dans la prmière maison
- la chaine de caractère renvoyée doit être free */
+ i.e. Le norvégien habite dans la prière maison
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte9(void){
     return variables_maisons(3, 2, 0); // norvégien
 }
 
 /* renvoie la contrainte 10 du problème des 5 maisons
  i.e. La personne qui fait de l'escalade a un voisin qui a un chat
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte10(void){
     int taille = 8;
     char** l = malloc(taille*sizeof(char*));
@@ -298,8 +298,8 @@ char* contrainte10(void){
 }
 
 /* renvoie la contrainte 11 du problème des 5 maisons
- i.e. La personne qui faot de la danse à un voisin qui fait du cheval
- la chaine de caractère renvoyée doit être free */
+ i.e. La personne qui fait de la danse à un voisin qui fait du cheval
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte11(void){
     int taille = 8;
     char** l = malloc(taille*sizeof(char*));
@@ -331,7 +331,7 @@ char* contrainte11(void){
 
 /* renvoie la contrainte 12 du problème des 5 maisons
  i.e. La personne qui fait du basket boit du Yop
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte12(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -355,7 +355,7 @@ char* contrainte12(void){
 
 /* renvoie la contrainte 13 du problème des 5 maisons
  i.e. L'allemand fait du karaté
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte13(void){
     int taille = 5;
     char** l = malloc(taille*sizeof(char*));
@@ -379,7 +379,7 @@ char* contrainte13(void){
 
 /* renvoie la contrainte 14 du problème des 5 maisons
  i.e. Le voisin du norvégien habite dans une maison bleue
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte14(void){
     int taille = 8;
     char** l = malloc(taille*sizeof(char*));
@@ -410,7 +410,7 @@ char* contrainte14(void){
 
 /* renvoie la contrainte 15 du problème des 5 maisons
  i.e. La personne qui fait de l'escalade à un voisin qui boit de l'eau
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte15(void){
     int taille = 8;
     char** l = malloc(taille*sizeof(char*));
@@ -441,7 +441,7 @@ char* contrainte15(void){
 }
 
 /* renvoie la contrainte qu'il ne doit y avoir qu'une seule de chaque valeur sur la ligne n
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte_ligne(int n){
     char** l = malloc(5*sizeof(char*));
     for (int i = 0; i<5; i++){
@@ -460,7 +460,7 @@ char* contrainte_ligne(int n){
 }
 
 /* renvoie la contrainte qu'il ne doit y avoir qu'un seul élément de chaque catégorie sur le tableau
- la chaine de caractère renvoyée doit être free */
+ la chaîne de caractère renvoyée doit être free */
 char* contrainte_placement(int n){
     char** l = malloc(5*sizeof(char*));
     for (int i = 0; i<5; i++){

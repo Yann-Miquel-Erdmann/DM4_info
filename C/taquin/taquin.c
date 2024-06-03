@@ -463,7 +463,7 @@ char* generate_move(int taille_grille, int index_move){
     return result;
 }
 
-char* generate_constraint_pos(int taille_grille, int* position, int var_len, int index_move){
+char* generate_constraint_pos(int* position, int var_len, int index_move){
     int taille = var_len*var_len;
     char** l = malloc(taille*sizeof(char*));
     
@@ -525,7 +525,7 @@ char* generate_solution(int taille_grille, int* initial_position, int var_len){
     // générer la solution
     int taille = 3;
     char** l = malloc(taille*sizeof(char*));
-    l[0] = generate_constraint_pos(taille_grille, initial_position, var_len, 0);
+    l[0] = generate_constraint_pos( initial_position, var_len, 0);
     
     char** variables = malloc(var_len2*sizeof(char*));
 
@@ -539,7 +539,7 @@ char* generate_solution(int taille_grille, int* initial_position, int var_len){
     free(variables);
     
     int final_pos[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    l[2] = generate_constraint_pos(taille_grille, final_pos, var_len, var_len2);
+    l[2] = generate_constraint_pos(final_pos, var_len, var_len2);
     
     char* result = et_liste(l, 3);
     

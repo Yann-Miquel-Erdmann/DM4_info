@@ -12,8 +12,9 @@
 #include <string.h>
 
 #include "le_menteur.h"
-#include "utils.h"
+#include "../utils.h"
 
+// les trois affirmations du menteur
 char** affirmations(void) {
     char** l = malloc(3 * sizeof(char*));
     l[0] = "(m_0&m_1)";
@@ -25,33 +26,39 @@ char** affirmations(void) {
 void generate_solution_menteur(char* filename) {
     char** l = affirmations();
     char** jours_de_depart = malloc(7 * 8 * sizeof(char*));
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++) { // i est le jour de départ 
         char temp[100];
         
-        char** jour0 = malloc(2 * sizeof(char*));
+        char** jour0 = malloc(2 * sizeof(char*)); // soit le menteur ment le premier jour
         int taille = sprintf(temp, "(j_0_%d&~m_%d&%s)", i, i, l[0])+1;
         jour0[0] = malloc(taille * sizeof(char));
         strcpy(jour0[0], temp);
+        // soit le menteur dit la vérité
         taille = sprintf(temp, "(j_0_%d&m_%d&~%s)", i, i, l[0])+1;
         jour0[1] = malloc(taille * sizeof(char));
         strcpy(jour0[1], temp);
 
+        // soit le menteur ment le deuxième jour 
         char** jour1 = malloc(2 * sizeof(char*));
         taille = sprintf(temp, "(j_1_%d&~m_%d&%s)", (i + 1) % 7, (i + 1) % 7, l[1])+1;
         jour1[0] = malloc(taille * sizeof(char));
         strcpy(jour1[0], temp);
+        // soit le menteur dit la vérité
         taille = sprintf(temp, "(j_1_%d&m_%d&~%s)", (i + 1) % 7, (i + 1) % 7, l[1])+1;
         jour1[1] = malloc(taille * sizeof(char));
         strcpy(jour1[1], temp);
 
+        // soit le menteur ment le troisième jour
         char** jour2 = malloc(2 * sizeof(char*));
         taille = sprintf(temp, "(j_2_%d&~m_%d&%s)", (i + 2) % 7,(i + 2) % 7, l[2])+1;
         jour2[0] = malloc(taille * sizeof(char));
         strcpy(jour2[0], temp);
+        // soit le menteur dit la vérité
         taille = sprintf(temp, "(j_2_%d&m_%d&~%s)", (i + 2) % 7,(i + 2) % 7, l[2])+1;
         jour2[1] = malloc(taille * sizeof(char));
         strcpy(jour2[1], temp);
 
+        // fait la la conjonction de des formules des trois jours        
         for (int j = 0; j < 2; j++) {
             for (int k = 0; k < 2; k++) {
                 for (int m = 0; m < 2; m++) {
@@ -73,11 +80,14 @@ void generate_solution_menteur(char* filename) {
     }
     free(l);
     
+
     char* jours = ou_liste(jours_de_depart, 7 * 8);
     for(int i = 0; i< 7*8; i++){
         free(jours_de_depart[i]);
     }
     free(jours_de_depart);
+
+    // s'assure que le menteur ne dit la vérité qu'une seule fois
     char** verites = malloc(8* sizeof(char*));
     for (int i = 0; i<7; i++){
         char temp[10];
@@ -91,6 +101,8 @@ void generate_solution_menteur(char* filename) {
     }
     free(verites);
     
+
+    // s'assure que les jours soient consécutifs
     char** jours_suivant = malloc(7*sizeof(char*));
     for (int i = 0; i<7; i++){
         char temp[50];
@@ -104,6 +116,7 @@ void generate_solution_menteur(char* filename) {
     }
     free(jours_suivant);
     
+    // s'assure que chacun des trois jours ne représente qu'un seul jour de la semaine
     char** unique_jour = malloc(3*sizeof(char*));
     char** jr = malloc(7*sizeof(char*));
     for (int i = 0; i<3; i++){

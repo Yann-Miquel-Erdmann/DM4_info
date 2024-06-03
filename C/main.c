@@ -2,10 +2,11 @@
 #include "utils.h"
 #include "dames/n_dames.h"
 #include "taquin/taquin.h"
-#include "coloriage_carte.h"
+#include "coloriage_carte/coloriage_carte.h"
 #include "5_maisons/5_maisons.h"
-#include "le_menteur.h"
-#include "sudoku.h"
+#include "le_menteur/le_menteur.h"
+#include "sudoku/sudoku.h"
+
 
 int main(void){
     int probleme = 0;
@@ -13,12 +14,12 @@ int main(void){
     printf("===== Générateur de problèmes pour le Satsolver =====\n\n");
     
     while (probleme > 5 || probleme < 1){
-        printf("Choisis un problème à résoudre parmis les suivants:\n");
+        printf("Choisis un problème à résoudre parmi les suivants:\n");
         printf("  1) Le menteur\n");
-        printf("  2) Le coloriage de la carte de france\n");
+        printf("  2) Le coloriage de la carte de France\n");
         printf("  3) Le problème des 5 maisons\n");
         printf("  4) Le sudoku (grille requise)\n");
-        printf("  5) Le taquin (configuration initiale requise) (pas résolvable)\n\n");
+        printf("  5) Le taquin (configuration initiale requise) (pas solvable)\n\n");
         
         printf("Choisis le numéro du problème: ");
         scanf("%d", &probleme);
@@ -47,14 +48,14 @@ int main(void){
                 break;
         }
     }
-    fclose(file);
+    // fclose(file);
     switch (probleme) {
         case 1:
             printf("Génération du problème du menteur en cours...\n");
             generate_solution_menteur(filename);
             break;
         case 2:
-            printf("Génération du problème de la carte de france en cours...\n");
+            printf("Génération du problème de la carte de France en cours...\n");
             generate_solution_carte(filename);
             break;
         case 3:

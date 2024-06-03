@@ -29,20 +29,21 @@ let main () =
       if Sys.argv.(1)= "naif" then
         (* cherche la valuation sur l'algoruthme naif *)
         print_valuation (Algo_naif.satsolver_naif (Base_satsolver.from_file Sys.argv.(2)))
-      else
+      else begin
         (* cherche la valuation sur l'algorithme de quine *)
-      print_string "file: "; print_string Sys.argv.(1);print_newline(); print_newline();
-      let formule = from_file Sys.argv.(1) in
-      print_string "done\n"; print_newline ();
-      print_string "testing valuations..."; print_newline();
-      let time0 = Sys.time() in
-      let v = quine formule in 
-      print_newline();
-      print_valuation v;
-      let end0 = Sys.time() in
-      print_newline ();
-      print_string "Solution found in "; print_float (end0-.time0); print_string " seconds"; print_newline();
-      print_string "Simplification time: "; print_float !simpl_time; print_string " seconds"; print_newline();
+        print_string "fichier: "; print_string Sys.argv.(1);print_newline(); print_newline();
+        let formule = from_file Sys.argv.(1) in
+        print_string "fait\n"; print_newline ();
+        print_string "test des valuations..."; print_newline();
+        let time0 = Sys.time() in
+        let v = quine formule in 
+        print_newline();
+        print_valuation v;
+        let end0 = Sys.time() in
+        print_newline ();
+        print_string "Solution trouvée en "; print_float (end0-.time0); print_string " secondes"; print_newline();
+        print_string "Temps de simplification: "; print_float !simpl_time; print_string " secondes"; print_newline();
+      end
 ;; 
 
 let _ = main()

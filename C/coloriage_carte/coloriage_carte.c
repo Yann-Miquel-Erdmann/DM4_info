@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "../utils.h"
 /*
 régions = {
 0:  Auvergne-Rhône-Alpes,
@@ -46,8 +46,8 @@ pour toute région i:
 
 */
 
-/* génère la liste d'adjacence des différnents sommets du graphe
-   représenté par les régions de la france */
+/* génère la liste d'adjacence des différents sommets du graphe
+   représenté par les régions de la France */
 void initialiser(int** voisins, int* voisin_tailles) {
     voisins[0] = malloc(5 * sizeof(int));
     voisins[0][0] = 1;
@@ -135,7 +135,7 @@ void initialiser(int** voisins, int* voisin_tailles) {
     voisin_tailles[12] = 2;
 }
 
-/* génère la solution au probmlème du coliroage de la carte
+/* génère la solution au problème du coloriage de la carte
    i.e. colorier les différentes régions pour que
    deux adjacentes ne soient pas de la même couleur */
 void generate_solution_carte(char* filename) {
@@ -147,12 +147,12 @@ void generate_solution_carte(char* filename) {
     initialiser(voisins, voisins_taille);
 
     char** regions = malloc(n * sizeof(char*));
-    for (int i = 0; i < n; i++) {
-        // initialisation des différent composants
+    for (int i = 0; i < n; i++) { // itère sur les différentes régions
+        
         char** couleurs = malloc(nb_couleurs * sizeof(char*));
         char** contrainte_couleurs_voisins = malloc((nb_couleurs + 1) * sizeof(char*));
         
-        // génération des contraintes
+        // génération des contraintes pour chacune des couleurs possibles
         for (int k = 0; k < nb_couleurs; k++) {
             char temp[20];
             int taille = sprintf(temp, "%d_%d", i, k)+1;
@@ -160,14 +160,13 @@ void generate_solution_carte(char* filename) {
             strcpy(couleurs[k], temp);
             
             
-            char** couleur_voisins = malloc(voisins_taille[i] * sizeof(char*));
             
-            // contraintes couleurs voisins
+            // s'assure qu'aucun des voisins n'a la même couleur que la région i 
+            char** couleur_voisins = malloc(voisins_taille[i] * sizeof(char*));
             for (int j = 0; j < voisins_taille[i]; j++) {
                 taille = sprintf(temp, "%d_%d", voisins[i][j], k)+1;
                 couleur_voisins[j] = malloc(taille * sizeof(char));
                 strcpy(couleur_voisins[j], temp);
-                
             }
             
             char** contrainte_et = malloc(2 * sizeof(char*));
@@ -194,6 +193,7 @@ void generate_solution_carte(char* filename) {
             
         }
         
+        // s’assure que chaque région n'a qu'une seule couleur associée
         char** contraintes_region = malloc(2 * sizeof(char*));
         contraintes_region[0] = une_seule(couleurs, nb_couleurs);
         contraintes_region[1] = ou_liste(contrainte_couleurs_voisins, nb_couleurs);
