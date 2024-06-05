@@ -14,8 +14,7 @@ let simpl_full (f:formule) : formule =
     | Or (Top, f2) | Or (f2, Top) -> Top, true
     | Not Top -> Bot, true
     | Not Bot -> Top, true
-    | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) -> simpl_step f2
-    | Not Not f2 -> simpl_step f2
+    | And (Top, f2) | And (f2, Top) | Or (Bot, f2) | Or (f2, Bot) | Not Not f2 -> simpl_step f2
     | And (f1, f2) ->
       begin 
         let f1, b1 = simpl_step f1 in

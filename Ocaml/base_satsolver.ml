@@ -81,7 +81,7 @@ let priority (c: char) : int = match c with
 (* Renvoie une formule construite à partir de la chaîne s.
    Lève une exception Erreur_syntaxe si la chaîne ne représente pas une formule valide. *)
 let parse (s: string) : formule =
-	print_string "parsing file..."; print_newline ();
+	print_string "parse du fichier..."; print_newline ();
 	let n = String.length s in
 	(* construit une formule à partir de s[i..j] *)
 	let rec parse_aux (i: int) (j:int) =
@@ -133,8 +133,8 @@ let from_file (filename: string) : formule =
 			| End_of_file -> ""
 	in
 	let f = open_in filename in 
-	let s = print_string "reading file..."; print_newline (); read_lines f in
-	print_string "done\n"; print_newline ();
+	let s = print_string "lecture du fichier..."; print_newline (); read_lines f in
+	print_string "fait\n"; print_newline ();
 	parse s
 ;;
 
