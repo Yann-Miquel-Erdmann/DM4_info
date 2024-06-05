@@ -112,7 +112,8 @@ char* contrainte1(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte2(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
+    
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(4, 1, i); // chien
@@ -126,7 +127,6 @@ char* contrainte2(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -136,7 +136,7 @@ char* contrainte2(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte3(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(2, 3, i); // thé
@@ -150,7 +150,6 @@ char* contrainte3(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -160,7 +159,7 @@ char* contrainte3(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte4(void){
     int taille = 4;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[4];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(0, 2, i); // vert
@@ -174,7 +173,6 @@ char* contrainte4(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -184,7 +182,7 @@ char* contrainte4(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte5(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(0, 2, i); // vert
@@ -198,7 +196,6 @@ char* contrainte5(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -208,7 +205,7 @@ char* contrainte5(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte6(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(1, 4, i); // vélo
@@ -222,7 +219,6 @@ char* contrainte6(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -232,7 +228,7 @@ char* contrainte6(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte7(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char*l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(0, 3, i); // jaune
@@ -246,7 +242,6 @@ char* contrainte7(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -270,7 +265,7 @@ char* contrainte9(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte10(void){
     int taille = 8;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[8];
     
     for (int i = 0; i< taille/2; i++){
         char* expr1 = variables_maisons(1, 0, i); // escalade
@@ -292,7 +287,6 @@ char* contrainte10(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -302,7 +296,7 @@ char* contrainte10(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte11(void){
     int taille = 8;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[8];
     
     for (int i = 0; i< taille/2; i++){
         char* expr1 = variables_maisons(1, 1, i); // danse
@@ -324,7 +318,6 @@ char* contrainte11(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -334,7 +327,7 @@ char* contrainte11(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte12(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(1, 3, i); // basket
@@ -348,7 +341,6 @@ char* contrainte12(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -358,7 +350,7 @@ char* contrainte12(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte13(void){
     int taille = 5;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[5];
     
     for (int i = 0; i< taille; i++){
         char* expr1 = variables_maisons(1, 2, i); // karaté
@@ -372,7 +364,6 @@ char* contrainte13(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -382,7 +373,7 @@ char* contrainte13(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte14(void){
     int taille = 8;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[8];
     for (int i = 0; i< taille/2; i++){
         char* expr1 = variables_maisons(0, 1, i); // bleu
         char* expr2 = variables_maisons(3, 2, i+1); // norvégien
@@ -403,7 +394,6 @@ char* contrainte14(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -413,7 +403,7 @@ char* contrainte14(void){
  la chaîne de caractère renvoyée doit être free */
 char* contrainte15(void){
     int taille = 8;
-    char** l = malloc(taille*sizeof(char*));
+    char* l[8];
     
     for (int i = 0; i< taille/2; i++){
         char* expr1 = variables_maisons(1, 0, i); // escalade
@@ -435,7 +425,6 @@ char* contrainte15(void){
     for(int i = 0; i< taille; i++){
         free(l[i]);
     }
-    free(l);
     
     return result;
 }
@@ -443,7 +432,7 @@ char* contrainte15(void){
 /* renvoie la contrainte qu'il ne doit y avoir qu'une seule de chaque valeur sur la ligne n
  la chaîne de caractère renvoyée doit être free */
 char* contrainte_ligne(int n){
-    char** l = malloc(5*sizeof(char*));
+    char*l[5];
     for (int i = 0; i<5; i++){
         char* variables[5] = {variables_maisons(n, 0, i),variables_maisons(n, 1, i),variables_maisons(n, 2, i),variables_maisons(n, 3, i),variables_maisons(n, 4, i)};
         l[i] = une_seule(variables, 5);
@@ -455,14 +444,13 @@ char* contrainte_ligne(int n){
     for (int i = 0; i< 5; i++){
         free(l[i]);
     }
-    free(l);
     return result;
 }
 
 /* renvoie la contrainte qu'il ne doit y avoir qu'un seul élément de chaque catégorie sur le tableau
  la chaîne de caractère renvoyée doit être free */
 char* contrainte_placement(int n){
-    char** l = malloc(5*sizeof(char*));
+    char*l[5];
     for (int i = 0; i<5; i++){
         char* variables[5] = {variables_maisons(n, i, 0),variables_maisons(n, i, 1),variables_maisons(n, i, 2),variables_maisons(n, i, 3),variables_maisons(n, i, 4)};
         l[i] = une_seule(variables, 5);
@@ -474,12 +462,11 @@ char* contrainte_placement(int n){
     for (int i = 0; i< 5; i++){
         free(l[i]);
     }
-    free(l);
     return result;
 }
 
 int generate_solution_5_maisons(char* filename){
-    char** variables = malloc(5*sizeof(char*));
+    char* variables[5];
     for (int i = 0; i<5; i++){
         variables[i] = contrainte_ligne(i);
     }
@@ -493,7 +480,6 @@ int generate_solution_5_maisons(char* filename){
     for (int i = 0; i<5; i++){
         free(variables[i]);
     }
-    free(variables);
     
     char* l[17] = {
         contrainte1(),

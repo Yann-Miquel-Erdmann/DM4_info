@@ -169,7 +169,7 @@ char* contrainte_toutes_diagonales (int n){
 }
 
 int gen_formule_n_dames(int n, char* filename){
-    char** l = malloc(3*sizeof(char*)); // 1 pour les lignes, 1 pour les colones, 1 pour les diagonales
+    char* l[3]; // 1 pour les lignes, 1 pour les colones, 1 pour les diagonales
     l[0] = contrainte_toutes_lignes(n);
     l[1] = contrainte_toutes_colones(n);
     l[2] = contrainte_toutes_diagonales(n);
@@ -190,7 +190,6 @@ int gen_formule_n_dames(int n, char* filename){
         }
         free(l[i]);
     }
-    free(l);
     FILE* file = fopen(filename, "w");
     fprintf(file, "%s", result);
     int len = (int)strlen(result);

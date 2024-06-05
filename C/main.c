@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "utils.h"
 #include "dames/n_dames.h"
 #include "taquin/taquin.h"
 #include "coloriage_carte/coloriage_carte.h"
