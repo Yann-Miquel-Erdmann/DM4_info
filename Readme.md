@@ -37,7 +37,7 @@ Pour compiler le générateur de formules
 make C
 ```
 ### exécution
-Pour exécuter le générateur de programmes
+Pour exécuter le générateur de formules
 ```sh
 ./generateur_de_formules
 ```

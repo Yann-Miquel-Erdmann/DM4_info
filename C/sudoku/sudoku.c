@@ -167,7 +167,7 @@ char* boites(int largeur, int hauteur, int largeur_boite, int hauteur_boite) {
     return res;
 }
 
-void generate_solution_sudoku(char* filename, int** position_initiale) {
+int generate_solution_sudoku(char* filename, int** position_initiale) {
     int largeur = 9;
     int hauteur = 9;
     int largeur_boite = 3;
@@ -180,8 +180,9 @@ void generate_solution_sudoku(char* filename, int** position_initiale) {
     contraintes[3] = cases(largeur, hauteur);
     contraintes[4] = boites(largeur, hauteur, largeur_boite, hauteur_boite);
     char* contraintes_totales = et_liste(contraintes, 5);
-
+    
     FILE* file = fopen(filename, "w");
+    int len = (int)strlen(contraintes_totales);
     fprintf(file, "%s\n", contraintes_totales);
     fclose(file);
     for (int i = 1; i < 5; i++) {
@@ -189,4 +190,5 @@ void generate_solution_sudoku(char* filename, int** position_initiale) {
     }
     free(contraintes);
     free(contraintes_totales);
+    return len;
 }

@@ -23,7 +23,7 @@ char** affirmations(void) {
     return l;
 }
 
-void generate_solution_menteur(char* filename) {
+int generate_solution_menteur(char* filename) {
     char** l = affirmations();
     char** jours_de_depart = malloc(7 * 8 * sizeof(char*));
     for (int i = 0; i < 7; i++) { // i est le jour de départ 
@@ -154,6 +154,8 @@ void generate_solution_menteur(char* filename) {
     
     FILE* file=  fopen(filename,"w");
     fprintf(file,"%s", final);
+    int len = (int)strlen(final);
     fclose(file);
     free(final);
+    return len;
 }
