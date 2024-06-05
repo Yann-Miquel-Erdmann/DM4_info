@@ -11,6 +11,7 @@
 int main(void){
     int probleme = 0;
     char filename[100];
+    int taille = 0;
     printf("===== Générateur de problèmes pour le Satsolver =====\n\n");
     
     while (probleme > 5 || probleme < 1){
@@ -54,15 +55,15 @@ int main(void){
     switch (probleme) {
         case 1:
             printf("Génération du problème du menteur en cours...\n");
-            generate_solution_menteur(filename);
+            taille = generate_solution_menteur(filename);
             break;
         case 2:
             printf("Génération du problème de la carte de France en cours...\n");
-            generate_solution_carte(filename);
+            taille = generate_solution_carte(filename);
             break;
         case 3:
             printf("Génération du problème des cinq maisons en cours...\n");
-            generate_solution_5_maisons(filename);
+            taille = generate_solution_5_maisons(filename);
             break;
         case 4:
             printf("Grille 9x9\n");
@@ -76,7 +77,7 @@ int main(void){
                 }
             }
             printf("Génération du problème du sudoku en cours...\n");
-            generate_solution_sudoku(filename, position_départ_sudoku);
+            taille = generate_solution_sudoku(filename, position_départ_sudoku);
             for(int i = 0; i<9; i++){
                 free(position_départ_sudoku[i]);
             }
@@ -90,12 +91,13 @@ int main(void){
                 scanf("%d", &position_départ_taquin[i]);
             }
             printf("Génération du problème du taquin en cours...\n");
-            generate_solution(3, position_départ_taquin, 9);
+            taille = generate_solution(filename, 3, position_départ_taquin, 9);
             free(position_départ_taquin);
             break;
             
         default:
             break;
     }
-     
+    printf("Génération terminée.\n");
+    printf("Taille du ficher généré: %d octes\n", taille);
 }

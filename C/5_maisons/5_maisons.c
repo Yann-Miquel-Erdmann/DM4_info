@@ -478,7 +478,7 @@ char* contrainte_placement(int n){
     return result;
 }
 
-void generate_solution_5_maisons(char* filename){
+int generate_solution_5_maisons(char* filename){
     char** variables = malloc(5*sizeof(char*));
     for (int i = 0; i<5; i++){
         variables[i] = contrainte_ligne(i);
@@ -521,7 +521,9 @@ void generate_solution_5_maisons(char* filename){
         free(l[i]);
     }
     FILE* file = fopen(filename, "w");
+    int len = (int)strlen(result);
     fprintf(file, "%s\n", result);
     fclose(file);
     free(result);
+    return len;
 }

@@ -13,8 +13,8 @@ SOURCES_OCAML = base_satsolver.ml valuation.ml satsolver.ml variable_priority.ml
 OCAML_DIR = Ocaml
 
 OCAML: $(addprefix $(OCAML_DIR)/, $(SOURCES_OCAML))
-	cd $(OCAML_DIR) && ocamlopt $(SOURCES_OCAML) -o ../$(EXEC_OCAML) 
-
+	cd $(OCAML_DIR) && ocamlopt $(SOURCES_OCAML) -o ../$(EXEC_OCAML)
+	
 clean_OCAML:
 	rm $(OCAML_DIR)/*.cmi	
 	rm $(OCAML_DIR)/*.cmx	
